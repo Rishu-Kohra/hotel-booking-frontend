@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import hotelbg from '../Images/hotel-bg.jpg';
+
 import {
   Container,
   Typography,
@@ -22,7 +24,7 @@ function Home() {
   return (
     <Box
       sx={{
-        backgroundImage: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/hotel-bg.jpg")',
+        backgroundImage: `url(${hotelbg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: 'calc(100vh - 64px)',
