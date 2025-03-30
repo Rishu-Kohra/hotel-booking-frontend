@@ -17,7 +17,7 @@ function Navbar() {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
-          Hotel Booking
+          InstaStay
         </Typography>
         <Box>
           {!token ? (

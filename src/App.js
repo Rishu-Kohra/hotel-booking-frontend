@@ -85,7 +85,7 @@ function App() {
               }
             />
             <Route
-              path="/dashboard"
+              path="/owner-dashboard"
               element={
                 <PrivateRoute requiredRole="OWNER">
                   <OwnerDashboard />

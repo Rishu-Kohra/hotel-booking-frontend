@@ -19,8 +19,9 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  FormControlLabel,
 } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, CheckBox } from '@mui/icons-material';
 import { hotels, roomTypes } from '../services/api';
 
 function OwnerDashboard() {
@@ -32,10 +33,19 @@ function OwnerDashboard() {
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [hotelForm, setHotelForm] = useState({
     hotelName: '',
-    address: '',
-    email: '',
     description: '',
-    amenities: '',
+    city: '',
+    state: '',
+    country: '',
+    address: '',
+    landmark: '',
+    hotelEmailId: '',
+    wifi: null,
+    breakfast: false,
+    swimmingPool: false,
+    gym: false,
+    bar: false,
+    ratings: 0
   });
   const [roomTypeForm, setRoomTypeForm] = useState({
     typeName: '',
@@ -64,10 +74,11 @@ function OwnerDashboard() {
   const handleHotelSubmit = async () => {
     try {
       const ownerId = localStorage.getItem('userId');
+      console.log('Owner ID:', ownerId);
       if (selectedHotel) {
         await hotels.update(selectedHotel.hotelId, { ...hotelForm, ownerId });
       } else {
-        await hotels.create({ ...hotelForm, ownerId });
+        await hotels.create(ownerId, { ...hotelForm });
       }
       setOpenHotelDialog(false);
       fetchHotels();
@@ -110,10 +121,20 @@ function OwnerDashboard() {
   const resetHotelForm = () => {
     setHotelForm({
       hotelName: '',
-      address: '',
-      email: '',
       description: '',
-      amenities: '',
+      city: '',
+      state: '',
+      country: '',
+      address: '',
+      landmark: '',
+      hotelEmailId: '',
+      wifi: null,
+      breakfast: false,
+      swimmingPool: false,
+      gym: false,
+      bar: false,
+      ratings: 0
+
     });
     setSelectedHotel(null);
   };
@@ -136,6 +157,7 @@ function OwnerDashboard() {
   }
 
   return (
+
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
         <Typography variant="h4">My Hotels</Typography>
@@ -170,10 +192,22 @@ function OwnerDashboard() {
                         setSelectedHotel(hotel);
                         setHotelForm({
                           hotelName: hotel.hotelName,
-                          address: hotel.address,
-                          email: hotel.email,
                           description: hotel.description,
-                          amenities: hotel.amenities.join(','),
+                          city: hotel.city,
+                          state: hotel.state,
+                          country: hotel.country,
+                          address: hotel.address,
+                          landmark: hotel.landmark,
+                          hotelEmailId: hotel.hotelEmailId,
+
+                          wifi: hotel.wifi,
+                          breakfast: hotel.breakfast,
+                          swimmingPool: hotel.swimmingPool,
+                          gym: hotel.gym,
+                          bar: hotel.bar,
+
+                          ratings: hotel.ratings
+
                         });
                         setOpenHotelDialog(true);
                       }}
@@ -185,14 +219,14 @@ function OwnerDashboard() {
                     </IconButton>
                   </Box>
                 </Box>
-                <Typography variant="body1" color="text.secondary" paragraph>
+                {/* <Typography variant="body1" color="text.secondary" paragraph>
                   {hotel.description}
                 </Typography>
                 <Typography variant="body2">Address: {hotel.address}</Typography>
                 <Typography variant="body2">Email: {hotel.email}</Typography>
                 <Typography variant="body2">
                   Amenities: {hotel.amenities.join(', ')}
-                </Typography>
+                </Typography> */}
 
                 <Box sx={{ mt: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
@@ -247,6 +281,34 @@ function OwnerDashboard() {
             />
             <TextField
               fullWidth
+              label="Description"
+              value={hotelForm.description}
+              onChange={(e) => setHotelForm({ ...hotelForm, description: e.target.value })}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="City"
+              value={hotelForm.city}
+              onChange={(e) => setHotelForm({ ...hotelForm, city: e.target.value })}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="State"
+              value={hotelForm.state}
+              onChange={(e) => setHotelForm({ ...hotelForm, state: e.target.value })}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Country"
+              value={hotelForm.country}
+              onChange={(e) => setHotelForm({ ...hotelForm, country: e.target.value })}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
               label="Address"
               value={hotelForm.address}
               onChange={(e) => setHotelForm({ ...hotelForm, address: e.target.value })}
@@ -254,26 +316,101 @@ function OwnerDashboard() {
             />
             <TextField
               fullWidth
+              label="Landmark"
+              value={hotelForm.landmark}
+              onChange={(e) => setHotelForm({ ...hotelForm, landmark: e.target.value })}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
               label="Email"
-              value={hotelForm.email}
-              onChange={(e) => setHotelForm({ ...hotelForm, email: e.target.value })}
+              value={hotelForm.hotelEmailId}
+              onChange={(e) => setHotelForm({ ...hotelForm, hotelEmailId: e.target.value })}
               sx={{ mb: 2 }}
             />
+            <div  style={{display:'flex', flexDirection:'row'}}>
+            <div>
+              <label>
+                Wifi:
+                <input
+                  type="checkbox"
+                  name="wifi"
+                  checked={hotelForm.wifi}
+                  onChange={
+                    (e) => {
+                      setHotelForm({ ...hotelForm, wifi: e.target.checked })
+                    }
+                  }
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                BreakFast:
+                <input
+                  type="checkbox"
+                  name="BreakFast"
+                  checked={hotelForm.breakfast}
+                  onChange={(e) => 
+                  {
+                    setHotelForm({...hotelForm, breakfast: e.target.checked})
+                    
+                  }
+                }
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                Pool:
+                <input
+                  type="checkbox"
+                  name="Swimming Pool"
+                  checked={hotelForm.swimmingPool}
+                  onChange={(e) => setHotelForm({
+                    ...hotelForm,
+                    swimmingPool: e.target.checked
+                  })}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                Gym:
+                <input
+                  type="checkbox"
+                  name="Gym"
+                  checked={hotelForm.gym}
+                  onChange={(e) => setHotelForm({
+                    ...hotelForm,
+                    gym: e.target.checked
+                  })}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                Bar:
+                <input
+                  type="checkbox"
+                  name="Bar"
+                  checked={hotelForm.bar}
+                  onChange={(e) => setHotelForm({
+                    ...hotelForm,
+                    bar: e.target.checked
+                  })}
+                />
+              </label>
+            </div>
+            </div>
             <TextField
               fullWidth
-              label="Description"
-              multiline
-              rows={4}
-              value={hotelForm.description}
-              onChange={(e) => setHotelForm({ ...hotelForm, description: e.target.value })}
+              label="Ratings"
+              value={hotelForm.ratings}
+              onChange={(e) => setHotelForm({ ...hotelForm, ratings: e.target.value })}
               sx={{ mb: 2 }}
             />
-            <TextField
-              fullWidth
-              label="Amenities (comma-separated)"
-              value={hotelForm.amenities}
-              onChange={(e) => setHotelForm({ ...hotelForm, amenities: e.target.value })}
-            />
+
           </Box>
         </DialogContent>
         <DialogActions>
@@ -294,6 +431,7 @@ function OwnerDashboard() {
         <DialogTitle>Add New Room Type</DialogTitle>
         <DialogContent>
           <Box sx={{ mt: 2 }}>
+
             <TextField
               fullWidth
               label="Room Type Name"

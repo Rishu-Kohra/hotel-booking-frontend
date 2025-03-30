@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Paper, TextField, Button, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api';
+import { jwtDecode } from 'jwt-decode';
 
 function Login() {
   const navigate = useNavigate();
@@ -22,18 +23,18 @@ function Login() {
     e.preventDefault();
     try {
       const response = await auth.login(formData.email, formData.password);
-      const { token } = response.data;
+      const { id,email,token } = response.data;
       localStorage.setItem('token', token);
-      
-      // Extract role from token (you might need to decode JWT)
-      const role = 'CUSTOMER'; // This should be extracted from token
+      localStorage.setItem('userId', id)
+      const decodedToken = jwtDecode(token);
+      const role = decodedToken.role
       localStorage.setItem('userRole', role);
-      
-      navigate(role === 'OWNER' ? '/owner-dashboard' : '/hotels');
+    navigate(role === 'OWNER' ? '/owner-dashboard' : '/hotels');
     } catch (error) {
       setError('Invalid email or password');
     }
   };
+  
 
   return (
     <Container maxWidth="sm">

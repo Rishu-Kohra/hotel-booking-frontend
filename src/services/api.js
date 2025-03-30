@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'http://localhost:9875/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -36,6 +36,7 @@ export const hotels = {
   create: (ownerId, data) => api.post(`/hotels?ownerId=${ownerId}`, data),
   update: (id, data) => api.put(`/hotels/${id}`, data),
   delete: (id) => api.delete(`/hotels/${id}`),
+  getByOwner: (ownerId) => api.get(`/hotels/owner/${ownerId}`)
 };
 
 export const roomTypes = {
