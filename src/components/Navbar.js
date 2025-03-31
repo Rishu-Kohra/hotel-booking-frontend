@@ -31,15 +31,17 @@ function Navbar() {
             </>
           ) : (
             <>
-              <Button color="inherit" component={Link} to="/hotels">
-                Hotels
-              </Button>
               {userRole === 'CUSTOMER' && (
-                <Button color="inherit" component={Link} to="/my-bookings">
-                  My Bookings
-                </Button>
+                <div>
+                  <Button color="inherit" component={Link} to="/hotels">
+                    Hotels
+                  </Button>
+                  <Button color="inherit" component={Link} to="/my-bookings">
+                    My Bookings
+                  </Button> 
+                </div>             
               )}
-              {userRole === 'OWNER' && (
+              {userRole === 'OWNER' && (                
                 <Button color="inherit" component={Link} to="/owner-dashboard">
                   Dashboard
                 </Button>

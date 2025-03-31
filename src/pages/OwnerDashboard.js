@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import EmailIcon from '@mui/icons-material/Email';
+import WifiIcon from '@mui/icons-material/Wifi';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import PoolIcon from '@mui/icons-material/Pool';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import LocalBarIcon from '@mui/icons-material/LocalBar';
 import {
   Container,
   Typography,
@@ -12,6 +19,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Chip,
+  Rating,
   DialogActions,
   TextField,
   IconButton,
@@ -31,6 +40,7 @@ function OwnerDashboard() {
   const [openHotelDialog, setOpenHotelDialog] = useState(false);
   const [openRoomTypeDialog, setOpenRoomTypeDialog] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
+  const [selectedRoomType, setSelectedRoomType] = useState(null);
   const [hotelForm, setHotelForm] = useState({
     hotelName: '',
     description: '',
@@ -48,11 +58,22 @@ function OwnerDashboard() {
     ratings: 0
   });
   const [roomTypeForm, setRoomTypeForm] = useState({
-    
+
     typeName: '',
     price: '',
     totalRooms: '',
   });
+
+  const renderAmenities = (hotel) => (
+    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
+      {hotel.wifi && <Chip icon={<WifiIcon />} label="WiFi" />}
+      {hotel.breakfast && <Chip icon={<RestaurantIcon />} label="Breakfast" />}
+      {hotel.swimmingPool && <Chip icon={<PoolIcon />} label="Swimming Pool" />}
+      {hotel.gym && <Chip icon={<FitnessCenterIcon />} label="Gym" />}
+      {hotel.bar && <Chip icon={<LocalBarIcon />} label="Bar" />}
+    </Box>
+  );
+
 
   useEffect(() => {
     fetchHotels();
@@ -65,8 +86,8 @@ function OwnerDashboard() {
       const response = await hotels.getByOwner(ownerId);
       setHotelList(response.data);
 
-      const hotelsWithRoomTypes = await Promise.all (
-        response.data.map(async (hotel)=> {
+      const hotelsWithRoomTypes = await Promise.all(
+        response.data.map(async (hotel) => {
           const roomTypesResponse = await roomTypes.getByHotel(hotel.hotelId);
           return {
             ...hotel,
@@ -103,13 +124,17 @@ function OwnerDashboard() {
   const handleRoomTypeSubmit = async () => {
     try {
       if (!selectedHotel) return;
-     
+
       const updatedRoomTypeForm = {
         ...roomTypeForm,
         hotelId: selectedHotel.hotelId,
       };
-      console.log(selectedHotel.hotelId)
-      await roomTypes.create(updatedRoomTypeForm);
+
+      if (selectedRoomType) {
+        await roomTypes.update(selectedRoomType.roomTypeId, updatedRoomTypeForm)
+      } else {
+        await roomTypes.create(updatedRoomTypeForm);
+      }
       setOpenRoomTypeDialog(false);
       fetchHotels();
       resetRoomTypeForm();
@@ -163,6 +188,7 @@ function OwnerDashboard() {
       price: '',
       totalRooms: '',
     });
+    setSelectedRoomType(null);
   };
 
   if (loading) {
@@ -216,13 +242,11 @@ function OwnerDashboard() {
                           address: hotel.address,
                           landmark: hotel.landmark,
                           hotelEmailId: hotel.hotelEmailId,
-
                           wifi: hotel.wifi,
                           breakfast: hotel.breakfast,
                           swimmingPool: hotel.swimmingPool,
                           gym: hotel.gym,
                           bar: hotel.bar,
-
                           ratings: hotel.ratings
 
                         });
@@ -239,14 +263,20 @@ function OwnerDashboard() {
                 <Typography variant="body1" color="text.secondary" paragraph>
                   {hotel.description}
                 </Typography>
-                <Typography variant="body2">
-                  Address: {hotel.address + ", " + hotel.city + ", " + hotel.state + ", " + hotel.country }
-                </Typography>
-                <Typography variant="body2">Email: {hotel.hotelEmailId}</Typography>
-                {/* <Typography variant="body2">
-                  Amenities: {hotel.amenities.join(', ')}
-                </Typography> */}
-
+                <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <LocationOnIcon/>
+                  <Typography variant="body2">
+                    {hotel.address + ", " + hotel.city + ", " + hotel.state + ", " + hotel.country}
+                  </Typography>
+                </Box>
+                <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <EmailIcon/>
+                  <Typography variant="body2">{hotel.hotelEmailId}</Typography>
+                </Box>
+                {renderAmenities(hotel)}
+                <Box sx={{ mb: 2 }}>
+                  <Rating value={hotel.ratings || 0} readOnly />
+                </Box>
                 <Box sx={{ mt: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                     <Typography variant="h6">Room Types</Typography>
@@ -270,6 +300,20 @@ function OwnerDashboard() {
                           secondary={`${roomType.totalRooms} rooms - Rs.${roomType.price}/night`}
                         />
                         <ListItemSecondaryAction>
+                          <IconButton
+                            onClick={() => {
+                              setSelectedHotel(hotel);
+                              setSelectedRoomType(roomType);
+                              setRoomTypeForm({
+                                typeName: roomType.typeName,
+                                price: roomType.price,
+                                totalRooms: roomType.totalRooms
+                              });
+                              setOpenRoomTypeDialog(true);
+                            }}
+                          >
+                            <EditIcon />
+                          </IconButton>
                           <IconButton
                             onClick={() => handleDeleteRoomType(hotel.hotelId, roomType.roomTypeId)}
                           >
@@ -347,80 +391,79 @@ function OwnerDashboard() {
               onChange={(e) => setHotelForm({ ...hotelForm, hotelEmailId: e.target.value })}
               sx={{ mb: 2 }}
             />
-            <div  style={{display:'flex', flexDirection:'row'}}>
-            <div>
-              <label>
-                Wifi:
-                <input
-                  type="checkbox"
-                  name="wifi"
-                  checked={hotelForm.wifi}
-                  onChange={
-                    (e) => {
-                      setHotelForm({ ...hotelForm, wifi: e.target.checked })
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div>
+                <label>
+                  Wifi:
+                  <input
+                    type="checkbox"
+                    name="wifi"
+                    checked={hotelForm.wifi}
+                    onChange={
+                      (e) => {
+                        setHotelForm({ ...hotelForm, wifi: e.target.checked })
+                      }
                     }
-                  }
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                BreakFast:
-                <input
-                  type="checkbox"
-                  name="BreakFast"
-                  checked={hotelForm.breakfast}
-                  onChange={(e) => 
-                  {
-                    setHotelForm({...hotelForm, breakfast: e.target.checked})
-                    
-                  }
-                }
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Pool:
-                <input
-                  type="checkbox"
-                  name="Swimming Pool"
-                  checked={hotelForm.swimmingPool}
-                  onChange={(e) => setHotelForm({
-                    ...hotelForm,
-                    swimmingPool: e.target.checked
-                  })}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Gym:
-                <input
-                  type="checkbox"
-                  name="Gym"
-                  checked={hotelForm.gym}
-                  onChange={(e) => setHotelForm({
-                    ...hotelForm,
-                    gym: e.target.checked
-                  })}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Bar:
-                <input
-                  type="checkbox"
-                  name="Bar"
-                  checked={hotelForm.bar}
-                  onChange={(e) => setHotelForm({
-                    ...hotelForm,
-                    bar: e.target.checked
-                  })}
-                />
-              </label>
-            </div>
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  BreakFast:
+                  <input
+                    type="checkbox"
+                    name="BreakFast"
+                    checked={hotelForm.breakfast}
+                    onChange={(e) => {
+                      setHotelForm({ ...hotelForm, breakfast: e.target.checked })
+
+                    }
+                    }
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  Pool:
+                  <input
+                    type="checkbox"
+                    name="Swimming Pool"
+                    checked={hotelForm.swimmingPool}
+                    onChange={(e) => setHotelForm({
+                      ...hotelForm,
+                      swimmingPool: e.target.checked
+                    })}
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  Gym:
+                  <input
+                    type="checkbox"
+                    name="Gym"
+                    checked={hotelForm.gym}
+                    onChange={(e) => setHotelForm({
+                      ...hotelForm,
+                      gym: e.target.checked
+                    })}
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  Bar:
+                  <input
+                    type="checkbox"
+                    name="Bar"
+                    checked={hotelForm.bar}
+                    onChange={(e) => setHotelForm({
+                      ...hotelForm,
+                      bar: e.target.checked
+                    })}
+                  />
+                </label>
+              </div>
             </div>
             <TextField
               fullWidth
