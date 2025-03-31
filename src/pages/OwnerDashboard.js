@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import EmailIcon from '@mui/icons-material/Email';
+import WifiIcon from '@mui/icons-material/Wifi';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
+import PoolIcon from '@mui/icons-material/Pool';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import LocalBarIcon from '@mui/icons-material/LocalBar';
 import {
   Container,
   Typography,
@@ -12,6 +19,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Chip,
+  Rating,
   DialogActions,
   TextField,
   IconButton,
@@ -54,6 +63,17 @@ function OwnerDashboard() {
     price: '',
     totalRooms: '',
   });
+
+  const renderAmenities = (hotel) => (
+    <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
+      {hotel.wifi && <Chip icon={<WifiIcon />} label="WiFi" />}
+      {hotel.breakfast && <Chip icon={<RestaurantIcon />} label="Breakfast" />}
+      {hotel.swimmingPool && <Chip icon={<PoolIcon />} label="Swimming Pool" />}
+      {hotel.gym && <Chip icon={<FitnessCenterIcon />} label="Gym" />}
+      {hotel.bar && <Chip icon={<LocalBarIcon />} label="Bar" />}
+    </Box>
+  );
+
 
   useEffect(() => {
     fetchHotels();
@@ -213,8 +233,8 @@ function OwnerDashboard() {
                     <IconButton
                       onClick={() => {
                         setSelectedHotel(hotel);
-                        setRoomTypeForm({
-                          room: hotel.hotelName,
+                        setHotelForm({
+                          hotelName: hotel.hotelName,
                           description: hotel.description,
                           city: hotel.city,
                           state: hotel.state,
@@ -222,13 +242,11 @@ function OwnerDashboard() {
                           address: hotel.address,
                           landmark: hotel.landmark,
                           hotelEmailId: hotel.hotelEmailId,
-
                           wifi: hotel.wifi,
                           breakfast: hotel.breakfast,
                           swimmingPool: hotel.swimmingPool,
                           gym: hotel.gym,
                           bar: hotel.bar,
-
                           ratings: hotel.ratings
 
                         });
@@ -245,14 +263,20 @@ function OwnerDashboard() {
                 <Typography variant="body1" color="text.secondary" paragraph>
                   {hotel.description}
                 </Typography>
-                <Typography variant="body2">
-                  Address: {hotel.address + ", " + hotel.city + ", " + hotel.state + ", " + hotel.country}
-                </Typography>
-                <Typography variant="body2">Email: {hotel.hotelEmailId}</Typography>
-                {/* <Typography variant="body2">
-                  Amenities: {hotel.amenities.join(', ')}
-                </Typography> */}
-
+                <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <LocationOnIcon/>
+                  <Typography variant="body2">
+                    {hotel.address + ", " + hotel.city + ", " + hotel.state + ", " + hotel.country}
+                  </Typography>
+                </Box>
+                <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <EmailIcon/>
+                  <Typography variant="body2">{hotel.hotelEmailId}</Typography>
+                </Box>
+                {renderAmenities(hotel)}
+                <Box sx={{ mb: 2 }}>
+                  <Rating value={hotel.ratings || 0} readOnly />
+                </Box>
                 <Box sx={{ mt: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                     <Typography variant="h6">Room Types</Typography>

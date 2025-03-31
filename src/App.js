@@ -69,7 +69,7 @@ function App() {
             <Route path="/hotels" element={<HotelList />} />
             <Route path="/hotels/:id" element={<HotelDetails />} />
             <Route
-              path="/hotels/:hotelId/book"
+              path="/hotels/:id/book"
               element={
                 <PrivateRoute requiredRole="CUSTOMER">
                   <BookingForm />
