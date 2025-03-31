@@ -48,8 +48,8 @@ function OwnerDashboard() {
     ratings: 0
   });
   const [roomTypeForm, setRoomTypeForm] = useState({
+    
     typeName: '',
-    description: '',
     price: '',
     totalRooms: '',
   });
@@ -64,6 +64,18 @@ function OwnerDashboard() {
       const ownerId = localStorage.getItem('userId');
       const response = await hotels.getByOwner(ownerId);
       setHotelList(response.data);
+
+      const hotelsWithRoomTypes = await Promise.all (
+        response.data.map(async (hotel)=> {
+          const roomTypesResponse = await roomTypes.getByHotel(hotel.hotelId);
+          return {
+            ...hotel,
+            roomTypes: roomTypesResponse.data
+          };
+        })
+      )
+      setHotelList(hotelsWithRoomTypes);
+
     } catch (error) {
       setError('Failed to fetch hotels');
     } finally {
@@ -91,7 +103,13 @@ function OwnerDashboard() {
   const handleRoomTypeSubmit = async () => {
     try {
       if (!selectedHotel) return;
-      await roomTypes.create(selectedHotel.hotelId, roomTypeForm);
+     
+      const updatedRoomTypeForm = {
+        ...roomTypeForm,
+        hotelId: selectedHotel.hotelId,
+      };
+      console.log(selectedHotel.hotelId)
+      await roomTypes.create(updatedRoomTypeForm);
       setOpenRoomTypeDialog(false);
       fetchHotels();
       resetRoomTypeForm();
@@ -111,7 +129,7 @@ function OwnerDashboard() {
 
   const handleDeleteRoomType = async (hotelId, roomTypeId) => {
     try {
-      await roomTypes.delete(hotelId, roomTypeId);
+      await roomTypes.delete(roomTypeId);
       fetchHotels();
     } catch (error) {
       setError('Failed to delete room type');
@@ -142,7 +160,6 @@ function OwnerDashboard() {
   const resetRoomTypeForm = () => {
     setRoomTypeForm({
       typeName: '',
-      description: '',
       price: '',
       totalRooms: '',
     });
@@ -219,12 +236,14 @@ function OwnerDashboard() {
                     </IconButton>
                   </Box>
                 </Box>
-                {/* <Typography variant="body1" color="text.secondary" paragraph>
+                <Typography variant="body1" color="text.secondary" paragraph>
                   {hotel.description}
                 </Typography>
-                <Typography variant="body2">Address: {hotel.address}</Typography>
-                <Typography variant="body2">Email: {hotel.email}</Typography>
                 <Typography variant="body2">
+                  Address: {hotel.address + ", " + hotel.city + ", " + hotel.state + ", " + hotel.country }
+                </Typography>
+                <Typography variant="body2">Email: {hotel.hotelEmailId}</Typography>
+                {/* <Typography variant="body2">
                   Amenities: {hotel.amenities.join(', ')}
                 </Typography> */}
 
@@ -248,7 +267,7 @@ function OwnerDashboard() {
                       <ListItem key={roomType.roomTypeId}>
                         <ListItemText
                           primary={roomType.typeName}
-                          secondary={`${roomType.totalRooms} rooms - $${roomType.price}/night`}
+                          secondary={`${roomType.totalRooms} rooms - Rs.${roomType.price}/night`}
                         />
                         <ListItemSecondaryAction>
                           <IconButton
@@ -437,15 +456,6 @@ function OwnerDashboard() {
               label="Room Type Name"
               value={roomTypeForm.typeName}
               onChange={(e) => setRoomTypeForm({ ...roomTypeForm, typeName: e.target.value })}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              fullWidth
-              label="Description"
-              multiline
-              rows={4}
-              value={roomTypeForm.description}
-              onChange={(e) => setRoomTypeForm({ ...roomTypeForm, description: e.target.value })}
               sx={{ mb: 2 }}
             />
             <TextField
