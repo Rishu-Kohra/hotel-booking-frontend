@@ -129,7 +129,7 @@ function OwnerDashboard() {
 
   const handleDeleteRoomType = async (hotelId, roomTypeId) => {
     try {
-      await roomTypes.delete(hotelId, roomTypeId);
+      await roomTypes.delete(roomTypeId);
       fetchHotels();
     } catch (error) {
       setError('Failed to delete room type');
@@ -239,7 +239,9 @@ function OwnerDashboard() {
                 <Typography variant="body1" color="text.secondary" paragraph>
                   {hotel.description}
                 </Typography>
-                <Typography variant="body2">Address: {hotel.address}</Typography>
+                <Typography variant="body2">
+                  Address: {hotel.address + ", " + hotel.city + ", " + hotel.state + ", " + hotel.country }
+                </Typography>
                 <Typography variant="body2">Email: {hotel.hotelEmailId}</Typography>
                 {/* <Typography variant="body2">
                   Amenities: {hotel.amenities.join(', ')}
@@ -265,7 +267,7 @@ function OwnerDashboard() {
                       <ListItem key={roomType.roomTypeId}>
                         <ListItemText
                           primary={roomType.typeName}
-                          secondary={`${roomType.totalRooms} rooms - $${roomType.price}/night`}
+                          secondary={`${roomType.totalRooms} rooms - Rs.${roomType.price}/night`}
                         />
                         <ListItemSecondaryAction>
                           <IconButton
