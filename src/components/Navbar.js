@@ -41,10 +41,15 @@ function Navbar() {
                   </Button> 
                 </div>             
               )}
-              {userRole === 'OWNER' && (                
-                <Button color="inherit" component={Link} to="/owner-dashboard">
-                  Dashboard
-                </Button>
+              {userRole === 'OWNER' && ( 
+                <div>              
+                  <Button color="inherit" component={Link} to="/owner-dashboard">
+                    Dashboard
+                  </Button>
+                  <Button color="inherit" component={Link} to="/hotelBookings">
+                    Hotel Bookings
+                  </Button> 
+                </div> 
               )}
               <Button color="inherit" onClick={handleLogout}>
                 Logout
