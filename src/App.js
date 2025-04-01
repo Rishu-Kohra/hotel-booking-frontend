@@ -17,6 +17,7 @@ import HotelDetails from './pages/HotelDetails';
 import BookingForm from './pages/BookingForm';
 import MyBookings from './pages/MyBookings';
 import OwnerDashboard from './pages/OwnerDashboard';
+import HotelBookings from './pages/HotelBookings';
 
 const theme = createTheme({
   palette: {
@@ -89,6 +90,14 @@ function App() {
               element={
                 <PrivateRoute requiredRole="OWNER">
                   <OwnerDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/hotelBookings"
+              element={
+                <PrivateRoute requiredRole="OWNER">
+                  <HotelBookings />
                 </PrivateRoute>
               }
             />
