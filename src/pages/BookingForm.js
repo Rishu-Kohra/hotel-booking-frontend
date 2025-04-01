@@ -15,6 +15,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { hotels, roomTypes, bookings } from '../services/api';
+import { format } from 'date-fns'
 
 function BookingForm() {
   const { hotelId } = useParams();
@@ -86,8 +87,8 @@ function BookingForm() {
       const bookingData = {
         hotelId,
         roomTypeId,
-        checkInDate: formData.checkInDate,
-        checkoutDate: formData.checkoutDate,
+        checkInDate: format(formData.checkInDate, 'yyyy-MM-dd'),
+        checkoutDate: format(formData.checkoutDate, 'yyyy-MM-dd'),
         numberOfRooms: formData.numberOfRooms,
       };
       await bookings.create(customerId, bookingData);
