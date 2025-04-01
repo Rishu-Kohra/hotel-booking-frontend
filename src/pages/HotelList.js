@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import hotelimg from '../Images/hotel-bg.jpg';
 import {
   Container,
   Grid,
@@ -86,7 +87,7 @@ function HotelList() {
               <CardMedia
                 component="img"
                 height="200"
-                image={`https://source.unsplash.com/random/400x200/?hotel,${hotel.hotelId}`}
+                image={hotelimg}
                 alt={hotel.hotelName}
               />
               <CardContent>

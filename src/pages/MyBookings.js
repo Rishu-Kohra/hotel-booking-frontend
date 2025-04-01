@@ -24,7 +24,7 @@ function MyBookings() {
       try {
         setLoading(true);
         const customerId = localStorage.getItem('userId');
-        const response = await bookings.getByCustomer(customerId);
+        const response = await bookings.getCustomerBookings(customerId);
         setBookingList(response.data);
       } catch (error) {
         setError('Failed to fetch bookings');
