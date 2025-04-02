@@ -56,7 +56,7 @@ function Navbar() {
                   
                 </div> 
               )}
-              <Button color="black" onClick={handleLogout}>
+              <Button color="inherit" onClick={handleLogout}>
                 Logout
               </Button>
             </>
