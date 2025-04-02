@@ -22,7 +22,7 @@ import HotelBookings from './pages/HotelBookings';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#000000',
     },
     secondary: {
       main: '#dc004e',

@@ -37,7 +37,7 @@ function Home() {
           <Grid item xs={12} md={8}>
             <Paper sx={{ p: 4, textAlign: 'center' }}>
               <Typography variant="h3" component="h1" gutterBottom>
-                Find Your Perfect Stay
+                Discover Your Dream Stay
               </Typography>
               <Typography variant="h6" color="text.secondary" gutterBottom>
                 Search hotels by city, amenities, or name
