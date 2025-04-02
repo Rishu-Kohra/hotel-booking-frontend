@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import logorect from '../Images/logo-rectangle.png';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -14,10 +15,10 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{backgroundColor: 'black'}}>
       <Toolbar>
-        <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}>
-          InstaStay
+        <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none'}}>
+          <img src={logorect} alt="Instastay Logo" width={200} height={65}/>
         </Typography>
         <Box>
           {!token ? (
@@ -42,16 +43,20 @@ function Navbar() {
                 </div>             
               )}
               {userRole === 'OWNER' && ( 
-                <div>              
+                <div>  
+                  <Button color="inherit" component={Link} to="/hotelBookings">
+                    Inventory
+                  </Button> 
+                  <Button color="inherit" component={Link} to="/hotelBookings">
+                    Hotel Bookings
+                  </Button>             
                   <Button color="inherit" component={Link} to="/owner-dashboard">
                     Dashboard
                   </Button>
-                  <Button color="inherit" component={Link} to="/hotelBookings">
-                    Hotel Bookings
-                  </Button> 
+                  
                 </div> 
               )}
-              <Button color="inherit" onClick={handleLogout}>
+              <Button color="black" onClick={handleLogout}>
                 Logout
               </Button>
             </>
