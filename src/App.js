@@ -96,6 +96,14 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/inventory"
+              element={
+                <PrivateRoute requiredRole="OWNER">
+                  <InventoryPage />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </Router>
       </LocalizationProvider>
