@@ -13,8 +13,10 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import { bookings } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 function MyBookings() {
+    const navigate = useNavigate();
   const [bookingList, setBookingList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -120,13 +122,26 @@ function MyBookings() {
                           sx={{ mb: 2 }}
                         />
                         {status.label === 'Upcoming' && (
-                          <Button
-                            variant="outlined"
-                            color="error"
-                            onClick={() => handleCancelBooking(booking.bookingId)}
-                          >
-                            Cancel Booking
-                          </Button>
+                          <Grid sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' , gap:2, width: 150}}>
+                            <Button
+                              variant="contained"
+                              fullWidth
+                              sx={{ fontSize: '13px' }}
+                              onClick={() => navigate(`/hotels/${booking.hotel.hotelId}`)}
+                            >
+                              View Details
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              color="error"
+                              fullWidth
+                              sx={{ fontSize: '13px' }}
+                              onClick={() => handleCancelBooking(booking.bookingId)}
+                            >
+                              Cancel Booking
+                            </Button>
+                            
+                          </Grid>
                         )}
                       </Grid>
                     </Grid>
