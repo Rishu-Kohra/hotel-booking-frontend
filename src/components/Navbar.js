@@ -20,7 +20,7 @@ function Navbar() {
         <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none'}}>
           <img src={logorect} alt="Instastay Logo" width={200} height={65}/>
         </Typography>
-        <Box>
+        <Box sx={{display: 'flex', flexWrap: 'nowrap', gap: 1}}>
           {!token ? (
             <>
               <Button color="inherit" component={Link} to="/login">
