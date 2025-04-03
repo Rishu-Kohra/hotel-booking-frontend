@@ -53,4 +53,8 @@ export const bookings = {
   cancel: (id) => api.delete(`/bookings/${id}`),
 };
 
+export const inventory = {
+  getInventoryByOwner: (ownerId) => api.get(`/inventory/owner/${ownerId}`),
+};
+
 export default api; 
