@@ -44,7 +44,7 @@ function Navbar() {
               )}
               {userRole === 'OWNER' && ( 
                 <div>  
-                  <Button color="inherit" component={Link} to="/hotelBookings">
+                  <Button color="inherit" component={Link} to="/inventory">
                     Inventory
                   </Button> 
                   <Button color="inherit" component={Link} to="/hotelBookings">

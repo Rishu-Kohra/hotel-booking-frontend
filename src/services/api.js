@@ -31,7 +31,7 @@ export const auth = {
 
 export const hotels = {
   search: (term) => api.get(`/hotels/search?searchTerm=${term}`),
-  getById: (id) => api.get(`/hotels/${id}`),
+  getById: (id) => api.get(`/hotels/hotel/${id}`),
   getByCity: (city) => api.get(`/hotels/city/${city}`),
   create: (ownerId, data) => api.post(`/hotels?ownerId=${ownerId}`, data),
   update: (id, data) => api.put(`/hotels/${id}`, data),
@@ -54,7 +54,7 @@ export const bookings = {
 };
 
 export const inventory = {
-  getInventoryByOwner: (ownerId) => api.get(`/inventory/owner/${ownerId}`),
+  getInventoryByOwner: (ownerId) => api.get(`/inventory/${ownerId}`),
 };
 
 export default api; 
