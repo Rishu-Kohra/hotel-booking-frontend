@@ -37,6 +37,9 @@ function OwnerDashboard() {
   const [hotelList, setHotelList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [hotelError, setHotelError] = useState('');
+  const [roomError, setRoomError] = useState('');
+
   const [openHotelDialog, setOpenHotelDialog] = useState(false);
   const [openRoomTypeDialog, setOpenRoomTypeDialog] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
@@ -105,58 +108,61 @@ function OwnerDashboard() {
   };
 
   const validateHotelForm = () => {
-    if (!hotelForm.hotelName) {
-      setError('Hotel name is required.');
+    const specialChar = /[!@#$%^&*()<>,.?":{}|]/;
+    const numberRegex = /\d/
+    if (!hotelForm.hotelName || specialChar.test(hotelForm.hotelName)) {
+      setHotelError('Hotel name is required.');
       return false;
     }
     if (!hotelForm.description || hotelForm.description.length < 10) {
-      setError('Description must be at least 10 characters long.');
+      setHotelError('Description must be at least 10 characters long.');
       return false;
     }
-    if (!/\S+@\S+\.\S+/.test(hotelForm.hotelEmailId)) {
-      setError('Please enter a valid email address.');
+    
+    if (!hotelForm.city || specialChar.test(hotelForm.city) || numberRegex.char(hotelForm.city)) {
+      setHotelError('City is required.');
+      return false;
+    }
+    if (!hotelForm.state || specialChar.test(hotelForm.state) || numberRegex.char(hotelForm.state)) {
+      setHotelError('State is required.');
+      return false;
+    }
+    if (!hotelForm.country || specialChar.test(hotelForm.country) || numberRegex.char(hotelForm.country)) {
+      setHotelError('Country is required.');
       return false;
     }
     if (!hotelForm.address) {
-      setError('Address is required.');
+      setHotelError('Address is required.');
       return false;
     }
-    if (!hotelForm.city) {
-      setError('City is required.');
-      return false;
-    }
-    if (!hotelForm.state) {
-      setError('State is required.');
-      return false;
-    }
-    if (!hotelForm.country) {
-      setError('Country is required.');
+    if (!/\S+@\S+\.\S+/.test(hotelForm.hotelEmailId)) {
+      setHotelError('Please enter a valid email address.');
       return false;
     }
     if (hotelForm.ratings < 0 || hotelForm.ratings > 5) {
-      setError('Ratings must be between 0 and 5.');
+      setHotelError('Ratings must be between 0 and 5.');
       return false;
     }
     // Reset error if all validations pass
-    setError('');
+    setHotelError('');
     return true;
   };
 
   const validateRoomTypeForm = () => {
     if (!roomTypeForm.typeName) {
-      setRoomTypeError('Room type name is required.');
+      setRoomError('Room type name is required.');
       return false;
     }
     if (isNaN(roomTypeForm.price) || roomTypeForm.price <= 0) {
-      setRoomTypeError('Price must be a positive number.');
+      setRoomError('Price must be a positive number.');
       return false;
     }
     if (isNaN(roomTypeForm.totalRooms) || roomTypeForm.totalRooms <= 0) {
-      setRoomTypeError('Total rooms must be a positive integer.');
+      setRoomError('Total rooms must be a positive integer.');
       return false;
     }
     // Reset error if all validations pass
-    setRoomTypeError('');
+    setRoomError(" ");
     return true;
   };
 
@@ -395,63 +401,80 @@ function OwnerDashboard() {
       {/* Hotel Dialog */}
       <Dialog open={openHotelDialog} onClose={() => setOpenHotelDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{selectedHotel ? 'Edit Hotel' : 'Add New Hotel'}</DialogTitle>
+          {hotelError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {hotelError}
+          </Alert>
+          )}
         <DialogContent>
           <Box sx={{ mt: 2 }}>
             <TextField
               fullWidth
               label="Hotel Name"
               value={hotelForm.hotelName}
-              onChange={(e) => setHotelForm({ ...hotelForm, hotelName: e.target.value })}
+              onChange={(e) => 
+                {setHotelForm({ 
+                  ...hotelForm, hotelName: e.target.value
+                });
+                setHotelError('');
+              }}
               sx={{ mb: 2 }}
+              required
             />
             <TextField
               fullWidth
               label="Description"
               value={hotelForm.description}
-              onChange={(e) => setHotelForm({ ...hotelForm, description: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, description: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
+              required
             />
             <TextField
               fullWidth
               label="City"
               value={hotelForm.city}
-              onChange={(e) => setHotelForm({ ...hotelForm, city: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, city: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
+              required
             />
             <TextField
               fullWidth
               label="State"
               value={hotelForm.state}
-              onChange={(e) => setHotelForm({ ...hotelForm, state: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, state: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
+              required
             />
             <TextField
               fullWidth
               label="Country"
               value={hotelForm.country}
-              onChange={(e) => setHotelForm({ ...hotelForm, country: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, country: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
+              required
             />
             <TextField
               fullWidth
               label="Address"
               value={hotelForm.address}
-              onChange={(e) => setHotelForm({ ...hotelForm, address: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, address: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
+              required
             />
             <TextField
               fullWidth
               label="Landmark"
               value={hotelForm.landmark}
-              onChange={(e) => setHotelForm({ ...hotelForm, landmark: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, landmark: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
             />
             <TextField
               fullWidth
               label="Email"
               value={hotelForm.hotelEmailId}
-              onChange={(e) => setHotelForm({ ...hotelForm, hotelEmailId: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, hotelEmailId: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
+              required
             />
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               <div>
@@ -531,8 +554,9 @@ function OwnerDashboard() {
               fullWidth
               label="Ratings"
               value={hotelForm.ratings}
-              onChange={(e) => setHotelForm({ ...hotelForm, ratings: e.target.value })}
+              onChange={(e) => {setHotelForm({ ...hotelForm, ratings: e.target.value });setHotelError('')}}
               sx={{ mb: 2 }}
+              required
             />
 
           </Box>
@@ -553,6 +577,11 @@ function OwnerDashboard() {
         fullWidth
       >
         <DialogTitle>Add New Room Type</DialogTitle>
+        {roomError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {roomError}
+          </Alert>
+          )}
         <DialogContent>
           <Box sx={{ mt: 2 }}>
 
@@ -560,7 +589,7 @@ function OwnerDashboard() {
               fullWidth
               label="Room Type Name"
               value={roomTypeForm.typeName}
-              onChange={(e) => setRoomTypeForm({ ...roomTypeForm, typeName: e.target.value })}
+              onChange={(e) => {setRoomTypeForm({ ...roomTypeForm, typeName: e.target.value }); setRoomError('')}}
               sx={{ mb: 2 }}
             />
             <TextField
@@ -568,7 +597,7 @@ function OwnerDashboard() {
               label="Price per Night"
               type="number"
               value={roomTypeForm.price}
-              onChange={(e) => setRoomTypeForm({ ...roomTypeForm, price: e.target.value })}
+              onChange={(e) => {setRoomTypeForm({ ...roomTypeForm, price: e.target.value }); setRoomError('')}}
               sx={{ mb: 2 }}
             />
             <TextField
@@ -576,7 +605,7 @@ function OwnerDashboard() {
               label="Total Rooms"
               type="number"
               value={roomTypeForm.totalRooms}
-              onChange={(e) => setRoomTypeForm({ ...roomTypeForm, totalRooms: e.target.value })}
+              onChange={(e) => {setRoomTypeForm({ ...roomTypeForm, totalRooms: e.target.value}); setRoomError('')}}
             />
           </Box>
         </DialogContent>
