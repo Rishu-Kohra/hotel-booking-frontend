@@ -104,7 +104,66 @@ function OwnerDashboard() {
     }
   };
 
+  const validateHotelForm = () => {
+    if (!hotelForm.hotelName) {
+      setError('Hotel name is required.');
+      return false;
+    }
+    if (!hotelForm.description || hotelForm.description.length < 10) {
+      setError('Description must be at least 10 characters long.');
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(hotelForm.hotelEmailId)) {
+      setError('Please enter a valid email address.');
+      return false;
+    }
+    if (!hotelForm.address) {
+      setError('Address is required.');
+      return false;
+    }
+    if (!hotelForm.city) {
+      setError('City is required.');
+      return false;
+    }
+    if (!hotelForm.state) {
+      setError('State is required.');
+      return false;
+    }
+    if (!hotelForm.country) {
+      setError('Country is required.');
+      return false;
+    }
+    if (hotelForm.ratings < 0 || hotelForm.ratings > 5) {
+      setError('Ratings must be between 0 and 5.');
+      return false;
+    }
+    // Reset error if all validations pass
+    setError('');
+    return true;
+  };
+
+  const validateRoomTypeForm = () => {
+    if (!roomTypeForm.typeName) {
+      setRoomTypeError('Room type name is required.');
+      return false;
+    }
+    if (isNaN(roomTypeForm.price) || roomTypeForm.price <= 0) {
+      setRoomTypeError('Price must be a positive number.');
+      return false;
+    }
+    if (isNaN(roomTypeForm.totalRooms) || roomTypeForm.totalRooms <= 0) {
+      setRoomTypeError('Total rooms must be a positive integer.');
+      return false;
+    }
+    // Reset error if all validations pass
+    setRoomTypeError('');
+    return true;
+  };
+
   const handleHotelSubmit = async () => {
+     if (!validateHotelForm()) {
+      return; // Stop submission if validation fails
+    }
     try {
       const ownerId = localStorage.getItem('userId');
       console.log('Owner ID:', ownerId);
@@ -122,6 +181,9 @@ function OwnerDashboard() {
   };
 
   const handleRoomTypeSubmit = async () => {
+    if (!validateRoomTypeForm()) {
+      return; // Stop submission if validation fails
+    }
     try {
       if (!selectedHotel) return;
 
