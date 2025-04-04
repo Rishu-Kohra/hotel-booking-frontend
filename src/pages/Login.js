@@ -3,6 +3,7 @@ import { Container, Paper, TextField, Button, Typography, Box } from '@mui/mater
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api';
 import { jwtDecode } from 'jwt-decode';
+import hotelbg from '../Images/hotel-bg.jpg';
 
 function Login() {
   const navigate = useNavigate();
@@ -25,10 +26,6 @@ function Login() {
     setError('Please enter a valid email address.');
     return;
     }
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      return;
-    }
     try {
       const response = await auth.login(formData.email, formData.password);
       const { id,email,token } = response.data;
@@ -45,6 +42,7 @@ function Login() {
   
 
   return (
+    <Box sx={{backgroundColor:`url(${hotelbg})`}}>
     <Container maxWidth="sm">
       <Box sx={{ mt: 8 }}>
         <Paper elevation={3} sx={{ p: 4 }}>
@@ -90,6 +88,7 @@ function Login() {
         </Paper>
       </Box>
     </Container>
+    </Box>
   );
 }
 

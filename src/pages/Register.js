@@ -28,11 +28,46 @@ function Register() {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+      
     });
+    setError(" ");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const password = formData.password;
+    const specialChar = /[!@#$%^&*()<>,.?":{}|]/;
+    const numberRegex = /\d/
+    const uppercaseRegex = /[A-Z]/
+    const lowercaseRegex = /[a-z]/
+    const contactRegex = /^[6-9]\d{9}$/
+    if (specialChar.test(formData.name) || numberRegex.test(formData.name)) {
+      setError("Please enter valid name")
+    }
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+    if (!specialChar.test(password)) {
+      setError('Password must contain a special character.');
+      return;
+    }
+    if (!numberRegex.test(password)) {
+      setError('Password must contain a number.');
+      return;
+    }
+    if (!uppercaseRegex.test(password)) {
+      setError('Password must have atleast 1 uppercase character.');
+      return;
+    }
+    if (!lowercaseRegex.test(password)) {
+      setError('Password must have atleast 1 lowercase character.');
+      return;
+    }
+    if (!contactRegex.test(formData.contact)) {
+      setError('Please enter a valid contact number.');
+      return;
+    }
     try {
       const data = {
         [userType === 'customer' ? 'customerName' : 'ownerName']: formData.name,
