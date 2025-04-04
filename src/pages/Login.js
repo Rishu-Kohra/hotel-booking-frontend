@@ -21,6 +21,14 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    setError('Please enter a valid email address.');
+    return;
+    }
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
     try {
       const response = await auth.login(formData.email, formData.password);
       const { id,email,token } = response.data;
