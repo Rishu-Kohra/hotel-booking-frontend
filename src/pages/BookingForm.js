@@ -82,6 +82,20 @@ function BookingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.checkInDate || !formData.checkoutDate) {
+      setError('Please select both check-in and check-out dates.');
+      return;
+    }
+    if (formData.checkInDate >= formData.checkoutDate) {
+      setError('Check-out date must be after check-in date.');
+      return;
+    }
+    if (formData.numberOfRooms < 1 || formData.numberOfRooms > roomType.totalRooms) {
+      setError(`Please select a number of rooms between 1 and ${roomType.totalRooms}.`);
+      return;
+    }
+    
     try {
       const customerId = localStorage.getItem('userId'); // You need to store this during login
       const bookingData = {
