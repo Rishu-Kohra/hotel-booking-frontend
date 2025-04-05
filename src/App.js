@@ -20,6 +20,8 @@ import OwnerDashboard from './pages/OwnerDashboard';
 import HotelBookings from './pages/HotelBookings';
 import Inventory from './pages/Inventory';
 import Profile from './pages/Profile'
+import OwnerProfile from './pages/OwnerProfile'
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -78,6 +80,14 @@ function App() {
               element={
                 <PrivateRoute requiredRole="CUSTOMER">
                   <Profile />
+                </PrivateRoute>
+              }
+            />
+             <Route
+              path="/owner-profile"
+              element={
+                <PrivateRoute requiredRole="OWNER">
+                  <OwnerProfile />
                 </PrivateRoute>
               }
             />

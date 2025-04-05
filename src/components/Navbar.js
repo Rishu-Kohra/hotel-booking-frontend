@@ -56,7 +56,7 @@ function Navbar() {
                   <Button color="inherit" component={Link} to="/owner-dashboard">
                     Dashboard
                   </Button>
-                  <Button color="inherit" component={Link} to="/profile">
+                  <Button color="inherit" component={Link} to="/owner-profile">
                     Profile
                   </Button> 
                 </div> 
