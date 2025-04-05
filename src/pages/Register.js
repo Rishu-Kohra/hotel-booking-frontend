@@ -43,6 +43,7 @@ function Register() {
     const contactRegex = /^[6-9]\d{9}$/
     if (specialChar.test(formData.name) || numberRegex.test(formData.name)) {
       setError("Please enter valid name")
+      return;
     }
     if (formData.password.length < 8) {
       setError('Password must be at least 8 characters long.');
