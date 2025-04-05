@@ -33,7 +33,6 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, CheckBox } from '@mui/icons-material';
 import { hotels, roomTypes, inventory } from '../services/api';
-import DialogConfirm from '../components/DialogConfirm';
 
 function OwnerDashboard() {
   const [hotelList, setHotelList] = useState([]);
@@ -45,7 +44,7 @@ function OwnerDashboard() {
   const [openRoomTypeDialog, setOpenRoomTypeDialog] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [selectedRoomType, setSelectedRoomType] = useState(null);
-  const [open, setOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const [hotelForm, setHotelForm] = useState({
     hotelName: '',
@@ -262,20 +261,12 @@ function OwnerDashboard() {
     setSelectedRoomType(null);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleAddInventory = async (roomTypeId) => {
     try{
       await inventory.intializeInventory(roomTypeId);
-      setOpen(false);
+      setSuccessMessage("Inventory Added for one Month")
     } catch(err) {
-      setError("Inventoryt cant be added")
+      setError("Inventory can't be added")
     }
   }
 
@@ -309,6 +300,9 @@ function OwnerDashboard() {
           {error}
         </Alert>
       )}
+
+      {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
+      
 
       <Grid container spacing={3}>
         {hotelList.map((hotel) => (
@@ -391,11 +385,10 @@ function OwnerDashboard() {
                           <Button
                             variant="outlined"
                             startIcon={<AddIcon />}
-                            onClick={() => handleClickOpen()}
+                            onClick={() => handleAddInventory(roomType.roomTypeId)}
                           >
                             Add Inventory
                           </Button>
-                          <DialogConfirm roomTypeId={roomType.roomTypeId} open={open} onClose={handleClose} message={"Add Inventory"} description={"Inventory will be added for the next 1 Months"}/>
                           <IconButton
                             onClick={() => {
                               setSelectedHotel(hotel);
