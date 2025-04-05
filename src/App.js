@@ -19,7 +19,7 @@ import MyBookings from './pages/MyBookings';
 import OwnerDashboard from './pages/OwnerDashboard';
 import HotelBookings from './pages/HotelBookings';
 import Inventory from './pages/Inventory';
-
+import Profile from './pages/Profile'
 const theme = createTheme({
   palette: {
     primary: {
@@ -70,6 +70,14 @@ function App() {
               element={
                 <PrivateRoute requiredRole="CUSTOMER">
                   <BookingForm />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute requiredRole="CUSTOMER">
+                  <Profile />
                 </PrivateRoute>
               }
             />
