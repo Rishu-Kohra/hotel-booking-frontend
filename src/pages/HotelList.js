@@ -21,7 +21,7 @@ import PoolIcon from '@mui/icons-material/Pool';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 
-function HotelList() {
+function HotelList(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

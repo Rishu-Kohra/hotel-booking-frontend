@@ -61,8 +61,9 @@ export const userProfile = {
   getCustomerProfile: (userId) => api.get(`/user/customer/${userId}`),
   getOwnerProfile: (userId) => api.get(`/user/owner/${userId}`),
   updateCustomerProfile: (userId, data) => api.put(`/user/update/customer/${userId}`, data),
-  updateOwnerProfile: (userId, data) => api.put(`/update/owner/${userId}`, data),
-  deleteCustomerProfile: (userId) => api.delete(`/user/customer/${userId}`)
+  updateOwnerProfile: (userId, data) => api.put(`/user/update/owner/${userId}`, data),
+  deleteCustomerProfile: (userId) => api.delete(`/user/customer/${userId}`),
+  feedbackSubmit:(userId, data) => api.post( `/user/customer/feedback/${userId}`, data)
 }
 
 export default api; 
