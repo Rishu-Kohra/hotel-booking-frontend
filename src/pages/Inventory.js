@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography,Collapse, Button, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert } from '@mui/material';
+import { Container, Typography, Box, Button, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert } from '@mui/material';
 import { inventory } from '../services/api';
-
+ 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [open, setOpen] = useState(false);
-
-
+ 
+  const [visibleRows, setVisibleRows] = useState(5);
+ 
+  const handleReadMore = () => {
+    setVisibleRows(prev => prev + 5);
+  };
+ 
+  const handleShowLess = () => {
+    setVisibleRows(5);
+  };
+ 
+ 
   useEffect(() => {
     const fetchInventory = async () => {
       try {
         const ownerId = localStorage.getItem('userId'); // Assuming you have the owner ID stored in local storage
         const response = await inventory.getInventoryByOwner(ownerId); // Adjust the API call as needed
-
+ 
         // Process the response to separate by hotelId
         const organizedData = {};
         response.data.forEach(hotelInventoryList => {
           hotelInventoryList.forEach(entry => {
-            const { hotel, date,availableRooms, bookedRooms, roomType:{roomTypeId, totalRooms, typeName}} = entry;
-
+            const { hotel, date, availableRooms, bookedRooms, roomType: { roomTypeId, totalRooms, typeName } } = entry;
+ 
             // Initialize the hotel entry if it doesn't exist
             if (!organizedData[hotel.hotelId]) {
               organizedData[hotel.hotelId] = {
@@ -28,14 +37,14 @@ const Inventory = () => {
                 roomTypes: {}
               };
             }
-
+ 
             if (!organizedData[hotel.hotelId].roomTypes[roomTypeId]) {
               organizedData[hotel.hotelId].roomTypes[roomTypeId] = {
-                typeName: entry.roomType.typeName, 
+                typeName: entry.roomType.typeName,
                 inventory: []
               };
             }
-
+ 
             organizedData[hotel.hotelId].roomTypes[roomTypeId].inventory.push({
               date,
               totalRooms,
@@ -44,6 +53,15 @@ const Inventory = () => {
             });
           });
         });
+ 
+        // Sort the inventory by date
+        Object.keys(organizedData).forEach(hotelId => {
+          Object.keys(organizedData[hotelId].roomTypes).forEach(roomTypeId => {
+            organizedData[hotelId].roomTypes[roomTypeId].inventory.sort((a, b) => new Date(a.date) - new Date(b.date));
+          });
+        });
+ 
+ 
         console.log(organizedData)
         setInventoryData(organizedData);
       } catch (err) {
@@ -53,10 +71,10 @@ const Inventory = () => {
         setLoading(false);
       }
     };
-
+ 
     fetchInventory();
   }, []);
-
+ 
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -64,7 +82,7 @@ const Inventory = () => {
       </Box>
     );
   }
-
+ 
   if (error) {
     return (
       <Alert severity="error" sx={{ mb: 2 }}>
@@ -72,7 +90,7 @@ const Inventory = () => {
       </Alert>
     );
   }
-
+ 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -80,15 +98,13 @@ const Inventory = () => {
       </Typography>
       {Object.keys(inventoryData).map((hotel) => (
         <Box key={hotel} sx={{ mb: 4 }}>
-          <Typography variant="h5">{inventoryData[hotel].hotelName}</Typography>
+          <Typography variant="h5">{inventoryData[hotel].hotelName}</Typography><Divider/>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
           {Object.keys(inventoryData[hotel].roomTypes).map((roomTypeId) => (
             <Box key={roomTypeId} sx={{ mb: 2 }}>
-              <Button onClick={() => setOpen(!open)}>
-                {open ? "Hide" : "Show"} {inventoryData[hotel].roomTypes[roomTypeId].typeName}
-              </Button>
-              <Collapse in={open}>              
+              <Typography variant='h6' sx={{ color: 'secondary.main', py: 2 }}>{inventoryData[hotel].roomTypes[roomTypeId].typeName}</Typography>
               <TableContainer component={Paper}>
-                <Table aria-label='a dense table' size='small'>
+                <Table size='small' aria-label='a dense table'>
                   <TableHead>
                     <TableRow>
                       <TableCell>Date</TableCell>
@@ -98,7 +114,7 @@ const Inventory = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {inventoryData[hotel].roomTypes[roomTypeId].inventory.map((entry) => (
+                    {inventoryData[hotel].roomTypes[roomTypeId].inventory.slice(0, visibleRows).map((entry) => (
                       <TableRow key={entry.date}>
                         <TableCell>{entry.date}</TableCell>
                         <TableCell>{entry.totalRooms}</TableCell>
@@ -109,13 +125,20 @@ const Inventory = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              </Collapse>
+              <Box sx={{ display: 'flex', mt: 2 }}>
+                {visibleRows < inventoryData[hotel].roomTypes[roomTypeId].inventory.length && (
+                  <Button sx={{ fontSize: '0.75rem', padding: '4px 4px' }} variant='contained' onClick={handleReadMore}>Show More (5)</Button>
+                )}
+                {visibleRows > 5 && (
+                  <Button sx={{ fontSize: '0.75rem', padding: '4px 4px' }} onClick={handleShowLess}>Show Less</Button>
+                )}
+              </Box>
             </Box>
-          ))}
+          ))}</Box>
         </Box>
       ))}
     </Container>
   );
 };
-
+ 
 export default Inventory;
