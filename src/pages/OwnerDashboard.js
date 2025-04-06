@@ -121,15 +121,15 @@ function OwnerDashboard() {
       return false;
     }
 
-    if (!hotelForm.city || specialChar.test(hotelForm.city) || numberRegex.char(hotelForm.city)) {
+    if (!hotelForm.city || specialChar.test(hotelForm.city) || numberRegex.test(hotelForm.city)) {
       setHotelError('City is required.');
       return false;
     }
-    if (!hotelForm.state || specialChar.test(hotelForm.state) || numberRegex.char(hotelForm.state)) {
+    if (!hotelForm.state || specialChar.test(hotelForm.state) || numberRegex.test(hotelForm.state)) {
       setHotelError('State is required.');
       return false;
     }
-    if (!hotelForm.country || specialChar.test(hotelForm.country) || numberRegex.char(hotelForm.country)) {
+    if (!hotelForm.country || specialChar.test(hotelForm.country) || numberRegex.test(hotelForm.country)) {
       setHotelError('Country is required.');
       return false;
     }
@@ -164,7 +164,7 @@ function OwnerDashboard() {
       return false;
     }
     // Reset error if all validations pass
-    setRoomError(" ");
+    setRoomError('');
     return true;
   };
 

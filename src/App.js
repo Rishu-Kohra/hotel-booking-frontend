@@ -54,6 +54,16 @@ function PrivateRoute({ children, requiredRole }) {
   return children;
 }
 
+function GuestRoute({ children }) {
+  const userRole = localStorage.getItem('userRole');
+ 
+  if (userRole == "OWNER") {
+    return <Navigate to="/owner-dashboard" />;
+  }
+ 
+  return children;
+}
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -62,7 +72,14 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Home />} />
+          <Route
+              path="/"
+              element={
+                <GuestRoute>
+                  <Home />
+                </GuestRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/hotels" element={<HotelList />} />

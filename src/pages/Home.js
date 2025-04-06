@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import HotelList from './HotelList';
 import Destination from '../components/Destinations';
+import FAQ from '../components/FAQ';
 
 function Home() {
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ function Home() {
       <Box sx={{mt:5, mb:5}}>
         <HotelList/>
         <Destination/>
+        <FAQ/>
       </Box>
     </Box>
   );
