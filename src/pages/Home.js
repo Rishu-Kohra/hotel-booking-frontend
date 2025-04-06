@@ -14,6 +14,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import HotelList from './HotelList';
 import Destination from '../components/Destinations';
 import FAQ from '../components/FAQ';
+import Feedback from '../components/Feedback';
+import '../index.css'
 
 function Home() {
   const navigate = useNavigate();
@@ -70,6 +72,7 @@ function Home() {
       <Box sx={{mt:5, mb:5}}>
         <HotelList/>
         <Destination/>
+        <Feedback/>
         <FAQ/>
       </Box>
     </Box>

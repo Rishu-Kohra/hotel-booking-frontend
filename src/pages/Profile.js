@@ -121,7 +121,7 @@ const ProfilePage = () => {
       {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
 
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 7 }}>
-        <Profileicon name={userInfo.name}/>
+        <Profileicon name={userInfo.name} width={100} height={200} fontSize={40}/>
         <Box>
           <Typography variant="h6">Name: {userInfo.name}</Typography>
           <Typography variant="h6">Email: {userInfo.email}</Typography>
