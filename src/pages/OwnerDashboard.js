@@ -121,7 +121,7 @@ function OwnerDashboard() {
       return false;
     }
 
-    if (!hotelForm.city || specialChar.test(hotelForm.city) || numberRegex.char(hotelForm.city)) {
+    if (!hotelForm.city || specialChar.test(hotelForm.city) || numberRegex.test(hotelForm.city)) {
       setHotelError('City is required.');
       return false;
     }
