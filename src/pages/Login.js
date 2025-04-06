@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Paper, TextField, Button, Typography, Box } from '@mui/material';
+import { Container, Paper, Alert, TextField, Button, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../services/api';
 import { jwtDecode } from 'jwt-decode';
@@ -12,6 +12,8 @@ function Login() {
     password: '',
   });
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  
 
   const handleChange = (e) => {
     setFormData({
@@ -34,7 +36,11 @@ function Login() {
       const decodedToken = jwtDecode(token);
       const role = decodedToken.role
       localStorage.setItem('userRole', role);
-    navigate(role === 'OWNER' ? '/owner-dashboard' : '/');
+      setSuccessMessage("You have been Logged In !!!")
+
+      setTimeout(() => {
+        navigate(role === 'OWNER' ? '/owner-dashboard' : '/');
+      }, 1000);
     } catch (error) {
       setError('Invalid email or password');
     }
@@ -54,6 +60,8 @@ function Login() {
               {error}
             </Typography>
           )}
+          {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
+          
           <form onSubmit={handleSubmit}>
             <TextField
               fullWidth
