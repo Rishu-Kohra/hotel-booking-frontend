@@ -8,6 +8,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import {
   Container,
+  DialogContentText,
   Typography,
   Card,
   CardContent,
@@ -31,7 +32,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, CheckBox } from '@mui/icons-material';
-import { hotels, roomTypes } from '../services/api';
+import { hotels, roomTypes, inventory } from '../services/api';
 
 function OwnerDashboard() {
   const [hotelList, setHotelList] = useState([]);
@@ -39,11 +40,12 @@ function OwnerDashboard() {
   const [error, setError] = useState('');
   const [hotelError, setHotelError] = useState('');
   const [roomError, setRoomError] = useState('');
-
   const [openHotelDialog, setOpenHotelDialog] = useState(false);
   const [openRoomTypeDialog, setOpenRoomTypeDialog] = useState(false);
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [selectedRoomType, setSelectedRoomType] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+
   const [hotelForm, setHotelForm] = useState({
     hotelName: '',
     description: '',
@@ -118,7 +120,7 @@ function OwnerDashboard() {
       setHotelError('Description must be at least 10 characters long.');
       return false;
     }
-    
+
     if (!hotelForm.city || specialChar.test(hotelForm.city) || numberRegex.char(hotelForm.city)) {
       setHotelError('City is required.');
       return false;
@@ -167,7 +169,7 @@ function OwnerDashboard() {
   };
 
   const handleHotelSubmit = async () => {
-     if (!validateHotelForm()) {
+    if (!validateHotelForm()) {
       return; // Stop submission if validation fails
     }
     try {
@@ -259,6 +261,15 @@ function OwnerDashboard() {
     setSelectedRoomType(null);
   };
 
+  const handleAddInventory = async (roomTypeId) => {
+    try{
+      await inventory.intializeInventory(roomTypeId);
+      setSuccessMessage("Inventory Added for one Month")
+    } catch(err) {
+      setError("Inventory can't be added")
+    }
+  }
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -289,6 +300,9 @@ function OwnerDashboard() {
           {error}
         </Alert>
       )}
+
+      {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
+      
 
       <Grid container spacing={3}>
         {hotelList.map((hotel) => (
@@ -332,13 +346,13 @@ function OwnerDashboard() {
                   {hotel.description}
                 </Typography>
                 <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <LocationOnIcon/>
+                  <LocationOnIcon />
                   <Typography variant="body2">
                     {hotel.address + ", " + hotel.city + ", " + hotel.state + ", " + hotel.country}
                   </Typography>
                 </Box>
                 <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <EmailIcon/>
+                  <EmailIcon />
                   <Typography variant="body2">{hotel.hotelEmailId}</Typography>
                 </Box>
                 {renderAmenities(hotel)}
@@ -368,6 +382,13 @@ function OwnerDashboard() {
                           secondary={`${roomType.totalRooms} rooms - Rs.${roomType.price}/night`}
                         />
                         <ListItemSecondaryAction>
+                          <Button
+                            variant="outlined"
+                            startIcon={<AddIcon />}
+                            onClick={() => handleAddInventory(roomType.roomTypeId)}
+                          >
+                            Add Inventory
+                          </Button>
                           <IconButton
                             onClick={() => {
                               setSelectedHotel(hotel);
@@ -401,19 +422,19 @@ function OwnerDashboard() {
       {/* Hotel Dialog */}
       <Dialog open={openHotelDialog} onClose={() => setOpenHotelDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>{selectedHotel ? 'Edit Hotel' : 'Add New Hotel'}</DialogTitle>
-          {hotelError && (
+        {hotelError && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {hotelError}
           </Alert>
-          )}
+        )}
         <DialogContent>
           <Box sx={{ mt: 2 }}>
             <TextField
               fullWidth
               label="Hotel Name"
               value={hotelForm.hotelName}
-              onChange={(e) => 
-                {setHotelForm({ 
+              onChange={(e) => {
+                setHotelForm({
                   ...hotelForm, hotelName: e.target.value
                 });
                 setHotelError('');
@@ -425,7 +446,7 @@ function OwnerDashboard() {
               fullWidth
               label="Description"
               value={hotelForm.description}
-              onChange={(e) => {setHotelForm({ ...hotelForm, description: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, description: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
               required
             />
@@ -433,7 +454,7 @@ function OwnerDashboard() {
               fullWidth
               label="City"
               value={hotelForm.city}
-              onChange={(e) => {setHotelForm({ ...hotelForm, city: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, city: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
               required
             />
@@ -441,7 +462,7 @@ function OwnerDashboard() {
               fullWidth
               label="State"
               value={hotelForm.state}
-              onChange={(e) => {setHotelForm({ ...hotelForm, state: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, state: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
               required
             />
@@ -449,7 +470,7 @@ function OwnerDashboard() {
               fullWidth
               label="Country"
               value={hotelForm.country}
-              onChange={(e) => {setHotelForm({ ...hotelForm, country: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, country: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
               required
             />
@@ -457,7 +478,7 @@ function OwnerDashboard() {
               fullWidth
               label="Address"
               value={hotelForm.address}
-              onChange={(e) => {setHotelForm({ ...hotelForm, address: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, address: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
               required
             />
@@ -465,14 +486,14 @@ function OwnerDashboard() {
               fullWidth
               label="Landmark"
               value={hotelForm.landmark}
-              onChange={(e) => {setHotelForm({ ...hotelForm, landmark: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, landmark: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
             />
             <TextField
               fullWidth
               label="Email"
               value={hotelForm.hotelEmailId}
-              onChange={(e) => {setHotelForm({ ...hotelForm, hotelEmailId: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, hotelEmailId: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
               required
             />
@@ -554,7 +575,7 @@ function OwnerDashboard() {
               fullWidth
               label="Ratings"
               value={hotelForm.ratings}
-              onChange={(e) => {setHotelForm({ ...hotelForm, ratings: e.target.value });setHotelError('')}}
+              onChange={(e) => { setHotelForm({ ...hotelForm, ratings: e.target.value }); setHotelError('') }}
               sx={{ mb: 2 }}
               required
             />
@@ -581,7 +602,7 @@ function OwnerDashboard() {
           <Alert severity="error" sx={{ mb: 2 }}>
             {roomError}
           </Alert>
-          )}
+        )}
         <DialogContent>
           <Box sx={{ mt: 2 }}>
 
@@ -589,7 +610,7 @@ function OwnerDashboard() {
               fullWidth
               label="Room Type Name"
               value={roomTypeForm.typeName}
-              onChange={(e) => {setRoomTypeForm({ ...roomTypeForm, typeName: e.target.value }); setRoomError('')}}
+              onChange={(e) => { setRoomTypeForm({ ...roomTypeForm, typeName: e.target.value }); setRoomError('') }}
               sx={{ mb: 2 }}
             />
             <TextField
@@ -597,7 +618,7 @@ function OwnerDashboard() {
               label="Price per Night"
               type="number"
               value={roomTypeForm.price}
-              onChange={(e) => {setRoomTypeForm({ ...roomTypeForm, price: e.target.value }); setRoomError('')}}
+              onChange={(e) => { setRoomTypeForm({ ...roomTypeForm, price: e.target.value }); setRoomError('') }}
               sx={{ mb: 2 }}
             />
             <TextField
@@ -605,7 +626,7 @@ function OwnerDashboard() {
               label="Total Rooms"
               type="number"
               value={roomTypeForm.totalRooms}
-              onChange={(e) => {setRoomTypeForm({ ...roomTypeForm, totalRooms: e.target.value}); setRoomError('')}}
+              onChange={(e) => { setRoomTypeForm({ ...roomTypeForm, totalRooms: e.target.value }); setRoomError('') }}
             />
           </Box>
         </DialogContent>
@@ -616,6 +637,7 @@ function OwnerDashboard() {
           </Button>
         </DialogActions>
       </Dialog>
+
     </Container>
   );
 }

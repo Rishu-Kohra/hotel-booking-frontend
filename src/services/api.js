@@ -55,6 +55,7 @@ export const bookings = {
 
 export const inventory = {
   getInventoryByOwner: (ownerId) => api.get(`/inventory/${ownerId}`),
+  intializeInventory:(roomTypeId) => api.post(`/inventory/intialize/${roomTypeId}`)
 };
 
 export const userProfile = {
