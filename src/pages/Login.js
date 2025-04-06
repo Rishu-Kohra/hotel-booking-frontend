@@ -34,7 +34,7 @@ function Login() {
       const decodedToken = jwtDecode(token);
       const role = decodedToken.role
       localStorage.setItem('userRole', role);
-    navigate(role === 'OWNER' ? '/owner-dashboard' : '/hotels');
+    navigate(role === 'OWNER' ? '/owner-dashboard' : '/');
     } catch (error) {
       setError('Invalid email or password');
     }

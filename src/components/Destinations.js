@@ -16,33 +16,38 @@ import {
     Grid,
     CardMedia,
 } from '@mui/material';
-const cities = [
-    {
-        name:"Delhi",
-        image:delhi
-    },
-    {
-        name:"Bangalore",
-        image:bangalore
-    },
-    {
-        name:"Chennai",
-        image:chennai
-    },
-    {
-        name:"Hyderabad",
-        image:hyderabad
-    },
-    {
-        name:"Mumbai",
-        image:mumbai
-    },
-    {
-        name:"Jaipur",
-        image:jaipur
-    }
-]
+import { useNavigate } from 'react-router-dom';
+
 export default function Destination() {
+    const cities = [
+        {
+            name:"Delhi",
+            image:delhi
+        },
+        {
+            name:"Bangalore",
+            image:bangalore
+        },
+        {
+            name:"Chennai",
+            image:chennai
+        },
+        {
+            name:"Hyderabad",
+            image:hyderabad
+        },
+        {
+            name:"Mumbai",
+            image:mumbai
+        },
+        {
+            name:"Jaipur",
+            image:jaipur
+        }
+    ]
+    
+    const navigate = useNavigate();
+    const handleSearch = (search) => { navigate(`/hotels?search=${encodeURIComponent(search)}`);};
     return (
         <Container sx={{mt: 5}}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
@@ -67,7 +72,7 @@ export default function Destination() {
                                         transition: 'transform 0.3s ease-in-out', 
                                     }
                                 }}
-                                
+                                onClick={()=>handleSearch(city.name)}
                             >
                                 <CardMedia component='img' height='250' image={city.image} alt={city}/>
                                 <Box 
