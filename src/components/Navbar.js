@@ -7,17 +7,21 @@ function Navbar() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const userRole = localStorage.getItem('userRole');
-
+  console.log(userRole)
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
     navigate('/login');
   };
-
+  const handleHomePage =()=> {
+    if(userRole !== "OWNER") {
+      navigate('/')
+    }
+  }
   return (
     <AppBar position="static" sx={{backgroundColor: 'black'}}>
       <Toolbar>
-        <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, textDecoration: 'none'}}>
+        <Typography variant="h6" onClick={()=>{handleHomePage()}} sx={{ flexGrow: 1, textDecoration: 'none'}}>
           <img src={logorect} alt="Instastay Logo" width={200} height={65}/>
         </Typography>
         <Box sx={{display: 'flex', flexWrap: 'nowrap', gap: 1}}>
