@@ -77,7 +77,7 @@ function HotelList(props) {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
         {searchTerm ? `Search Results for "${searchTerm}"` : 'All Hotels'}
       </Typography>
       <Grid container spacing={3}>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert } from '@mui/material';
+import { Container, Typography,Collapse, Button, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, Alert } from '@mui/material';
 import { inventory } from '../services/api';
 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [open, setOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -81,9 +83,12 @@ const Inventory = () => {
           <Typography variant="h5">{inventoryData[hotel].hotelName}</Typography>
           {Object.keys(inventoryData[hotel].roomTypes).map((roomTypeId) => (
             <Box key={roomTypeId} sx={{ mb: 2 }}>
-              <Typography variant='h6'>{inventoryData[hotel].roomTypes[roomTypeId].typeName}</Typography>
+              <Button onClick={() => setOpen(!open)}>
+                {open ? "Hide" : "Show"} {inventoryData[hotel].roomTypes[roomTypeId].typeName}
+              </Button>
+              <Collapse in={open}>              
               <TableContainer component={Paper}>
-                <Table>
+                <Table aria-label='a dense table' size='small'>
                   <TableHead>
                     <TableRow>
                       <TableCell>Date</TableCell>
@@ -104,6 +109,7 @@ const Inventory = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+              </Collapse>
             </Box>
           ))}
         </Box>
