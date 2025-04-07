@@ -5,6 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { userProfile } from '../services/api'; 
 import { useNavigate } from 'react-router-dom';
 import Profileicon from '../components/Profileicon';
+import DeleteDialogBox from '../components/DeleteDialogBox';
 
 const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -195,8 +196,8 @@ const ProfilePage = () => {
           <Button onClick={handleEditSubmit} variant="contained">Save</Button>
         </DialogActions>
       </Dialog>
-
-      <Dialog
+      <DeleteDialogBox open={open} onClose={handleClose} handleDeleteAccount={handleDeleteAccount}/>
+      {/* <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
@@ -214,7 +215,7 @@ const ProfilePage = () => {
           </Button>
           <Button onClick={handleDeleteAccount} color="error" autoFocus> Delete </Button>
           </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </Container>
   );
 };

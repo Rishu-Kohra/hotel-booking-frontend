@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, TextField, Button, Alert, IconButton, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Container, Box, Typography, TextField, Button, Alert, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { userProfile } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import  HotelByOwner  from '../components/HotelByOwner'
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteDialogBox from '../components/DeleteDialogBox';
  
 const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -53,6 +55,27 @@ const ProfilePage = () => {
     }
    
   };
+
+  const handleDeleteAccount = async () => {
+      try {
+        await userProfile.deleteOwnerProfile(userId); 
+        console.log('Account deleted');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        navigate('/login');
+      } catch (err) {
+        setError('Failed to delete account.');
+      }
+    };
+
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };  
  
   return (
     <Container sx={{ mt: 4, mb:2, p: 2, boxShadow: 3, borderRadius: 2, bgcolor: 'background.paper' }}>
@@ -61,9 +84,14 @@ const ProfilePage = () => {
         My Profile <IconButton onClick={() => setOpenEditDialog(true)}><EditIcon /></IconButton>
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
-      <Typography variant="h6" sx={{ mt: 2 }}>Name: {userInfo.name}</Typography>
-      <Typography variant="h6">Email: {userInfo.email}</Typography>
-      <Typography variant="h6">Contact: {userInfo.contact}</Typography>
+      <Box>
+        <Typography variant="h6" sx={{ mt: 2 }}>Name: {userInfo.name}</Typography>
+        <Typography variant="h6">Email: {userInfo.email}</Typography>
+        <Typography variant="h6">Contact: {userInfo.contact}</Typography>
+        <Button variant="contained" color="error" onClick={handleClickOpen} startIcon={<DeleteIcon />} sx={{ mt: 2 }}>
+          Delete Account
+        </Button>
+      </Box>
       
  
       {/* Edit Profile Dialog */}
@@ -93,6 +121,7 @@ const ProfilePage = () => {
       </Dialog>
     </Container>
     <HotelByOwner/>
+    <DeleteDialogBox open={open} onClose={handleClose} handleDeleteAccount={handleDeleteAccount}/>
     </Container>
   );
 };
