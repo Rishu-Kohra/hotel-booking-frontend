@@ -10,12 +10,12 @@ const getRandomColor = () => {
   return color;
 };
 
-const Profileicon = ({ name }) => {
+const Profileicon = ({ name, width, height, fontSize }) => {
   const initial = name.charAt(0).toUpperCase();
   const backgroundColor = getRandomColor();
 
   return (
-    <Avatar sx={{ bgcolor: backgroundColor, width: 100, height: 100, color: 'black', fontSize: 40 }}>
+    <Avatar sx={{ bgcolor: backgroundColor, width: width, height: height, color: 'black', fontSize: fontSize }}>
       {initial}
     </Avatar>
   );
