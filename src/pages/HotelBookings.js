@@ -96,7 +96,7 @@ function HotelBookings() {
           {bookingList.map((booking) => {
             const status = getBookingStatus(booking);
             return (
-              <Grid item xs={12} key={booking.bookingId}>
+              <Grid item xs={4} key={booking.bookingId}>
                 <Card>
                   <CardContent>
                     <Grid container spacing={2}>

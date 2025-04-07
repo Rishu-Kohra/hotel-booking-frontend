@@ -36,7 +36,8 @@ export const hotels = {
   create: (ownerId, data) => api.post(`/hotels?ownerId=${ownerId}`, data),
   update: (id, data) => api.put(`/hotels/${id}`, data),
   delete: (id) => api.delete(`/hotels/${id}`),
-  getByOwner: (ownerId) => api.get(`/hotels/owner/${ownerId}`)
+  getByOwner: (ownerId) => api.get(`/hotels/owner/${ownerId}`),
+  getAvailableRoomsByCityAndDate: (checkinDate, checkoutDate, city) => api.get(`/inventory/available-hotels/${checkinDate}/${checkoutDate}/${city}`)
 };
 
 export const roomTypes = {

@@ -197,25 +197,7 @@ const ProfilePage = () => {
         </DialogActions>
       </Dialog>
       <DeleteDialogBox open={open} onClose={handleClose} handleDeleteAccount={handleDeleteAccount}/>
-      {/* <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete your account?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            This action cannot be undone. Please confirm if you want to delete your account.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleDeleteAccount} color="error" autoFocus> Delete </Button>
-          </DialogActions>
-      </Dialog> */}
+      
     </Container>
   );
 };

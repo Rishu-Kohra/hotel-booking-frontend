@@ -29,7 +29,7 @@ function Home() {
     <Box sx={{mb:5}}>
       <Box
         sx={{
-          backgroundImage: `url(${hotelbg})`,
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url(${hotelbg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           minHeight: 'calc(100vh - 64px)',
