@@ -21,7 +21,6 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { hotels } from '../services/api';
 import SearchIcon from '@mui/icons-material/Search';
-
 import WifiIcon from '@mui/icons-material/Wifi';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import PoolIcon from '@mui/icons-material/Pool';
@@ -31,14 +30,14 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format } from 'date-fns'
-
+import HotelImage from '../components/HotelImage';
 
 function HotelList(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get('search') || '';
-  // const [selectedCity, setSelectedCity] = useState('')
+  const [selectedCity, setSelectedCity] = useState('')
   const [cityList, setCityList] = useState([])
   const [hotelList, setHotelList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,6 +66,7 @@ function HotelList(props) {
 
     fetchHotels();
   }, [searchTerm]);
+  
 
   const renderAmenities = (hotel) => (
     <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -107,6 +107,7 @@ function HotelList(props) {
       setError("Error Fetching the Available Hotels");
     }
   }
+  
 
   if (loading) {
     return (
@@ -156,7 +157,6 @@ function HotelList(props) {
               value={formData.city}
               label="City"
               onChange={handleCityChange}
-
             >
               {cityList.map((city) => (
                 <MenuItem value={city}>{city}</MenuItem>
@@ -186,12 +186,7 @@ function HotelList(props) {
             {hotelList.map((hotel) => (
               <Grid item xs={12} sm={6} md={4} key={hotel.hotelId}>
                 <Card>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={hotelimg}
-                    alt={hotel.hotelName}
-                  />
+                  <HotelImage hotelId={hotel.hotelId} height={250} width={'100%'}/>
                   <CardContent>
                     <Typography variant="h6" gutterBottom>
                       {hotel.hotelName}

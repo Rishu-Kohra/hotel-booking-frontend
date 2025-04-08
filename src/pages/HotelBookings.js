@@ -19,8 +19,6 @@ function HotelBookings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [hotelList, setHotelList] = useState([]);
-
-
   useEffect(() => {
     const fetchBookings = async () => {
       try {

@@ -71,4 +71,13 @@ export const userProfile = {
   getFeedback: () => api.get(`/user/customer/getFeedback`)
 }
 
+export const images = {
+  uploadImage: (hotelId, data) => api.post(`/image/hotel/${hotelId}`, data,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }),
+  getImage: (hotelId) => api.get(`/image/hotel/getImage/${hotelId}`)
+};
+
 export default api; 
