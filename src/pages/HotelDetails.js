@@ -4,6 +4,7 @@ import {
   Grid,
   Typography,
   Card,
+  CardMedia,
   CardContent,
   Button,
   Box,
@@ -16,7 +17,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { hotels, roomTypes } from '../services/api';
+import { hotels, roomTypes, images } from '../services/api';
 import WifiIcon from '@mui/icons-material/Wifi';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import PoolIcon from '@mui/icons-material/Pool';
@@ -24,35 +25,38 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
-
+ 
 function HotelDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [rooms, setRooms] = useState([]);
+  const [image, setImage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
+ 
   useEffect(() => {
     const fetchHotelDetails = async () => {
       try {
         setLoading(true);
-        const [hotelResponse, roomsResponse] = await Promise.all([
+        const [hotelResponse, roomsResponse, imageResponse] = await Promise.all([
           hotels.getById(id),
           roomTypes.getByHotel(id),
+          images.getImage(id),
         ]);
         setHotel(hotelResponse.data);
         setRooms(roomsResponse.data);
+        setImage(imageResponse.data[0]);
       } catch (error) {
         setError('Failed to fetch hotel details');
       } finally {
         setLoading(false);
       }
     };
-
+ 
     fetchHotelDetails();
   }, [id]);
-
+ 
   const renderAmenities = () => (
     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
       {hotel.wifi && <Chip icon={<WifiIcon />} label="WiFi" />}
@@ -62,7 +66,7 @@ function HotelDetails() {
       {hotel.bar && <Chip icon={<LocalBarIcon />} label="Bar" />}
     </Box>
   );
-
+ 
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -70,7 +74,7 @@ function HotelDetails() {
       </Box>
     );
   }
-
+ 
   if (error || !hotel) {
     return (
       <Container sx={{ mt: 4 }}>
@@ -80,7 +84,7 @@ function HotelDetails() {
       </Container>
     );
   }
-
+ 
   return (
     <Container sx={{ mt: 4 }}>
       <Grid container spacing={4}>
@@ -88,6 +92,13 @@ function HotelDetails() {
           <Typography variant="h4" gutterBottom>
             {hotel.hotelName}
           </Typography>
+         
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={image}
+                    alt={hotel.hotelName}
+                  />
           <Box sx={{ mb: 2 }}>
             <Rating value={hotel.ratings || 0} readOnly />
           </Box>
@@ -130,7 +141,7 @@ function HotelDetails() {
             ))}
           </List>
         </Grid>
-        <Grid item xs={12} md={4}>
+        {/* <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -153,10 +164,11 @@ function HotelDetails() {
               />
             </CardContent>
           </Card>
-        </Grid>
+        </Grid> */}
+       
       </Grid>
     </Container>
   );
 }
-
-export default HotelDetails; 
+ 
+export default HotelDetails;
