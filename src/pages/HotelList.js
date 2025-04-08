@@ -170,6 +170,7 @@ function HotelList(props) {
           size="large"
           startIcon={<SearchIcon />}
           onClick={handleSearch}
+          disabled={!formData.checkInDate || !formData.checkoutDate || !formData.city}
         >
           Search
         </Button>

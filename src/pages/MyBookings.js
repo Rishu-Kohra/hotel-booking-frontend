@@ -122,7 +122,7 @@ function MyBookings() {
                           Number of Rooms: {booking.numberOfRooms}
                         </Typography>
                         <Typography variant="body2">
-                          Total Price: ₹{booking.totalPrice}
+                          Total Price: &#8377;{booking.totalPrice}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
