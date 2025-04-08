@@ -16,6 +16,7 @@ import {
   ListItem,
   ListItemText,
 } from '@mui/material';
+import HotelImage from '../components/HotelImage'
 import { useParams, useNavigate } from 'react-router-dom';
 import { hotels, roomTypes, images } from '../services/api';
 import WifiIcon from '@mui/icons-material/Wifi';
@@ -93,12 +94,7 @@ function HotelDetails() {
             {hotel.hotelName}
           </Typography>
          
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={image}
-                    alt={hotel.hotelName}
-                  />
+          {/* <HotelImage hotelId={hotel.hotelId} width={'100%'} height={250}/> */}
           <Box sx={{ mb: 2 }}>
             <Rating value={hotel.ratings || 0} readOnly />
           </Box>
@@ -141,8 +137,8 @@ function HotelDetails() {
             ))}
           </List>
         </Grid>
-        {/* <Grid item xs={12} md={4}>
-          <Card>
+        <Grid item xs={12} md={4}>
+          {/* <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
                 Location
@@ -163,8 +159,10 @@ function HotelDetails() {
                 allowFullScreen
               />
             </CardContent>
-          </Card>
-        </Grid> */}
+          </Card> */}
+          <HotelImage hotelId={hotel.hotelId} width={'100%'} height={250}/>
+
+        </Grid>
        
       </Grid>
     </Container>

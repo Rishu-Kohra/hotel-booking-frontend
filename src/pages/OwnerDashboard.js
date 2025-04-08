@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
 import WifiIcon from '@mui/icons-material/Wifi';
@@ -32,7 +32,8 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, CheckBox } from '@mui/icons-material';
-import { hotels, roomTypes, inventory } from '../services/api';
+import { hotels, roomTypes, inventory, images } from '../services/api';
+import axios from 'axios';
 
 function OwnerDashboard() {
   const [hotelList, setHotelList] = useState([]);
@@ -68,6 +69,29 @@ function OwnerDashboard() {
     price: '',
     totalRooms: '',
   });
+
+  const [image, setImage] = useState(''); 
+
+  const handleFileChange = (event) => {
+    setError('')
+    const file = event.target.files[0];
+    if(file) {
+      console.log('selected file:', file.name)
+      setImage(file);
+    }
+  };
+
+  const handleButtonClick = async (hotelId) => {
+      const formData = new FormData();
+      formData.append('file',image)
+      try{
+        await images.uploadImage(hotelId, formData)
+        setSuccessMessage('Your hotel photo has been added')
+      } catch(err) {
+        console.log("Error not uploading")
+        setError("Photos not Added")
+      }
+  }
 
   const renderAmenities = (hotel) => (
     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
@@ -302,7 +326,6 @@ function OwnerDashboard() {
       )}
 
       {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
-      
 
       <Grid container spacing={3}>
         {hotelList.map((hotel) => (
@@ -311,7 +334,17 @@ function OwnerDashboard() {
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                   <Typography variant="h5">{hotel.hotelName}</Typography>
-                  <Box>
+                  <Box sx={{display:'flex', flexDirection:'row'}}>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                      <input type='file'name='file' onChange={handleFileChange}/>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={()=>handleButtonClick(hotel.hotelId)}
+                      >
+                        Upload Image
+                      </Button>
+                    </div>
                     <IconButton
                       onClick={() => {
                         setSelectedHotel(hotel);

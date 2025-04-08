@@ -72,7 +72,11 @@ export const userProfile = {
 }
 
 export const images = {
-  uploadImage: (hotelId) => api.post(`/image/hotel/${hotelId}`),
+  uploadImage: (hotelId, data) => api.post(`/image/hotel/${hotelId}`, data,{
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }),
   getImage: (hotelId) => api.get(`/image/hotel/getImage/${hotelId}`)
 };
 
