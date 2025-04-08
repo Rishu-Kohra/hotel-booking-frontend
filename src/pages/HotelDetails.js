@@ -90,12 +90,15 @@ function HotelDetails() {
     <Container sx={{ mt: 4 }}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
+          
           <Typography variant="h4" gutterBottom>
             {hotel.hotelName}
           </Typography>
+          <Typography variant="body1">
+              {hotel.description}
+            </Typography>
          
-          {/* <HotelImage hotelId={hotel.hotelId} width={'100%'} height={250}/> */}
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 2, mt:2 }}>
             <Rating value={hotel.ratings || 0} readOnly />
           </Box>
           <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -108,9 +111,6 @@ function HotelDetails() {
             <EmailIcon color="action" />
             <Typography>{hotel.hotelEmailId}</Typography>
           </Box>
-          <Typography variant="body1" paragraph>
-            {hotel.description}
-          </Typography>
           {renderAmenities()}
           <Divider sx={{ my: 3 }} />
           <Typography variant="h5" gutterBottom>
@@ -122,9 +122,8 @@ function HotelDetails() {
                 <CardContent>
                   <Typography variant="h6">{room.typeName}</Typography>
                   <Typography color="text.secondary" gutterBottom>
-                    Price: ${room.price} per night
+                    Price: &#8377;{room.price} per night
                   </Typography>
-                  <Typography>Available Rooms: {room.totalRooms}</Typography>
                   <Button
                     variant="contained"
                     sx={{ mt: 2 }}
@@ -138,30 +137,7 @@ function HotelDetails() {
           </List>
         </Grid>
         <Grid item xs={12} md={4}>
-          {/* <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Location
-              </Typography>
-              {hotel.landmark && (
-                <Typography color="text.secondary" paragraph>
-                  Landmark: {hotel.landmark}
-                </Typography>
-              )}
-              <iframe
-                title="Hotel Location"
-                width="100%"
-                height="300"
-                frameBorder="0"
-                src={`https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${encodeURIComponent(
-                  `${hotel.hotelName}, ${hotel.address}, ${hotel.city}`
-                )}`}
-                allowFullScreen
-              />
-            </CardContent>
-          </Card> */}
           <HotelImage hotelId={hotel.hotelId} width={'100%'} height={250}/>
-
         </Grid>
        
       </Grid>

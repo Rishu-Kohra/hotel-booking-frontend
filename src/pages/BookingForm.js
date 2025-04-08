@@ -58,6 +58,7 @@ function BookingForm() {
   }, [hotelId, roomTypeId]);
 
   const handleDateChange = (field) => (date) => {
+    setError('')
     setFormData({
       ...formData,
       [field]: date,
@@ -65,6 +66,7 @@ function BookingForm() {
   };
 
   const handleNumberOfRoomsChange = (e) => {
+    setError('')
     const value = Math.max(1, Math.min(parseInt(e.target.value) || 1, roomType?.totalRooms || 1));
     setFormData({
       ...formData,
@@ -94,7 +96,7 @@ function BookingForm() {
       await bookings.create(customerId, bookingData);
       navigate('/my-bookings');
     } catch (error) {
-      setError('Failed to create booking');
+      setError('Failed to create booking for the Requested Dates');
     }
   };
 
@@ -106,20 +108,17 @@ function BookingForm() {
     );
   }
 
-  if (error || !hotel || !roomType) {
-    return (
-      <Container sx={{ mt: 4 }}>
-        <Alert severity="error">{error || 'Invalid booking details'}</Alert>
-      </Container>
-    );
-  }
-
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>
           Book Your Stay
         </Typography>
+        {error && (
+          <Container sx={{mt:2}}>
+            <Alert severity="error">{error}</Alert>
+          </Container>      
+        )}
         <Typography variant="h6" gutterBottom>
           {hotel.hotelName} - {roomType.typeName}
         </Typography>
@@ -175,6 +174,8 @@ function BookingForm() {
             </Grid>
           </Grid>
         </form>
+
+
       </Paper>
     </Container>
   );
