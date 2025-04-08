@@ -15,6 +15,7 @@ import HotelList from './HotelList';
 import Destination from '../components/Destinations';
 import FAQ from '../components/FAQ';
 import Feedback from '../components/Feedback';
+import Footer from '../components/Footer'
 import '../index.css'
 
 function Home() {
@@ -26,7 +27,7 @@ function Home() {
   };
 
   return (
-    <Box sx={{mb:5}}>
+    <Box>
       <Box
         sx={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url(${hotelbg})`,
@@ -45,13 +46,13 @@ function Home() {
                   Discover Your Dream Stay
                 </Typography>
                 <Typography variant="h6" color="text.secondary" gutterBottom>
-                  Search hotels by city, amenities, or name
+                  Search hotels by city, name,  or etc
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, mt: 4 }}>
                   <TextField
                     fullWidth
                     variant="outlined"
-                    placeholder="Enter city, hotel name, or amenities"
+                    placeholder="Enter city, hotel, name, or etc "
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -69,11 +70,12 @@ function Home() {
           </Grid>
         </Container>
       </Box>
-      <Box sx={{mt:5, mb:5}}>
+      <Box>
         <HotelList/>
         <Destination/>
         <Feedback/>
         <FAQ/>
+        <Footer/>
       </Box>
     </Box>
   );

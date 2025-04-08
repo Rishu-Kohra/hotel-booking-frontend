@@ -37,6 +37,7 @@ export const hotels = {
   update: (id, data) => api.put(`/hotels/${id}`, data),
   delete: (id) => api.delete(`/hotels/${id}`),
   getByOwner: (ownerId) => api.get(`/hotels/owner/${ownerId}`),
+  getCities: () => api.get(`/hotels/getCity`),
   getAvailableRoomsByCityAndDate: (checkinDate, checkoutDate, city) => api.get(`/inventory/available-hotels/${checkinDate}/${checkoutDate}/${city}`)
 };
 
