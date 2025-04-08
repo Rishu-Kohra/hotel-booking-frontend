@@ -159,7 +159,7 @@ function BookingForm() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="h6">
-                Total Price: ${calculateTotalPrice()}
+                Total Price: &#8377;{calculateTotalPrice()}
               </Typography>
             </Grid>
             <Grid item xs={12}>

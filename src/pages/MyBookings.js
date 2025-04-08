@@ -20,6 +20,7 @@ function MyBookings() {
   const [bookingList, setBookingList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -42,6 +43,7 @@ function MyBookings() {
     try {
       await bookings.cancel(bookingId);
       setBookingList(bookingList.filter(booking => booking.bookingId !== bookingId));
+      setSuccessMessage("Your Booking has been Cancelled")
     } catch (error) {
       setError('Failed to cancel booking');
     }
@@ -75,6 +77,14 @@ function MyBookings() {
         <Alert severity="error">{error}</Alert>
       </Container>
     );
+  }
+
+  if (successMessage) {
+    return (
+      <Container sx={{mt:4}}>
+        <Alert severity="success">{successMessage}</Alert>
+      </Container>
+    )
   }
 
   return (
@@ -112,7 +122,7 @@ function MyBookings() {
                           Number of Rooms: {booking.numberOfRooms}
                         </Typography>
                         <Typography variant="body2">
-                          Total Price: ${booking.totalPrice}
+                          Total Price: &#8377;{booking.totalPrice}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} sm={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
