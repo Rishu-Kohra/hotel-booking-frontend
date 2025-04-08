@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import hotelbg from '../Images/hotel-bg.jpg';
 import {
   Container,
   Paper,
@@ -28,7 +29,7 @@ function Register() {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-      
+
     });
     setError(" ");
   };
@@ -90,78 +91,87 @@ function Register() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 8 }}>
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Register
-          </Typography>
-          {error && (
-            <Typography color="error" align="center" gutterBottom>
-              {error}
-            </Typography>
-          )}
-          <RadioGroup
-            row
-            value={userType}
-            onChange={(e) => setUserType(e.target.value)}
-            sx={{ justifyContent: 'center', mb: 2 }}
-          >
-            <FormControlLabel value="customer" control={<Radio />} label="Customer" />
-            <FormControlLabel value="owner" control={<Radio />} label="Hotel Owner" />
-          </RadioGroup>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              fullWidth
-              label="Name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <TextField
-              fullWidth
-              label="Contact Number"
-              name="contact"
-              value={formData.contact}
-              onChange={handleChange}
-              margin="normal"
-              required
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3 }}
-            >
+    <Box sx={{
+      backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url(${hotelbg})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: 'calc(100vh - 64px)',
+      display: 'flex',
+      alignItems: 'center',
+    }}>
+      <Container maxWidth="sm">
+        <Box sx={{ mt: 4, mb: 4 }}>
+          <Paper elevation={3} sx={{ p: 4 }}>
+            <Typography variant="h4" align="center" gutterBottom>
               Register
-            </Button>
-          </form>
-        </Paper>
-      </Box>
-    </Container>
+            </Typography>
+            {error && (
+              <Typography color="error" align="center" gutterBottom>
+                {error}
+              </Typography>
+            )}
+            <RadioGroup
+              row
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              sx={{ justifyContent: 'center', mb: 2 }}
+            >
+              <FormControlLabel value="customer" control={<Radio />} label="Customer" />
+              <FormControlLabel value="owner" control={<Radio />} label="Hotel Owner" />
+            </RadioGroup>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label="Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                margin="normal"
+                required
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                margin="normal"
+                required
+              />
+              <TextField
+                fullWidth
+                label="Password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                margin="normal"
+                required
+              />
+              <TextField
+                fullWidth
+                label="Contact Number"
+                name="contact"
+                value={formData.contact}
+                onChange={handleChange}
+                margin="normal"
+                required
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3 }}
+              >
+                Register
+              </Button>
+            </form>
+          </Paper>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 
