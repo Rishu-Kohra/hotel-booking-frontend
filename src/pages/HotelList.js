@@ -13,6 +13,10 @@ import {
   Chip,
   TextField,
   CircularProgress,
+  FormControl,
+  MenuItem,
+  InputLabel,
+  Select
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { hotels } from '../services/api';
@@ -34,7 +38,8 @@ function HotelList(props) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get('search') || '';
-
+  // const [selectedCity, setSelectedCity] = useState('')
+  const [cityList, setCityList] = useState([])
   const [hotelList, setHotelList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -50,6 +55,9 @@ function HotelList(props) {
         setLoading(true);
         const response = await hotels.search(searchTerm);
         setHotelList(response.data);
+        const res = await hotels.getCities();
+        setCityList(res.data);
+        console.log(cityList)
       } catch (error) {
         setError('Failed to fetch hotels');
       } finally {
@@ -78,11 +86,14 @@ function HotelList(props) {
   };
 
   const handleCityChange = (e) => {
+    const selectedCity = e.target.value;
+
     setFormData({
       ...formData,
-      city: e.target.value,
+      city: selectedCity,
     });
   };
+
 
   const handleSearch = async () => {
     try{
@@ -143,13 +154,21 @@ function HotelList(props) {
           </LocalizationProvider>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="City"
-            type="text"
-            value={formData.city}
-            onChange={handleCityChange}
-          />
+            <FormControl fullWidth sx={{ minWidth: 200 }}>
+              <InputLabel id="demo-simple-select-label">City</InputLabel>
+              <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={formData.city}
+                  label="City"
+                  onChange={handleCityChange}
+              >
+                {cityList.map((city)=>(
+                  <MenuItem value={city}>{city}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          
         </Grid>
         <Button
           variant="contained"
