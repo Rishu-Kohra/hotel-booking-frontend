@@ -9,14 +9,12 @@ const Feedback = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [feedBackList, setFeedbackList] = useState([]);
 
-    const totalSlides = Math.ceil(feedBackList.length/itemsPerSlide);
-
     const handlePrev = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? feedBackList.length - 1 : prevIndex - 1));
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? Math.ceil(feedBackList.length / itemsPerSlide) - 1 : prevIndex - 1));
     };
 
     const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === feedBackList.length - 1 ? 0 : prevIndex + 1));
+        setCurrentIndex((prevIndex) => (prevIndex === Math.ceil(feedBackList.length / itemsPerSlide) - 1 ? 0 : prevIndex + 1));
     };
 
     const visibleFeedback = feedBackList.slice(
@@ -34,16 +32,6 @@ const Feedback = () => {
         }
     }
 
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        autoplay: false,
-        slidesToShow: 3,
-        slidesToScroll:1,
-        arrow: false
-    };
-
     useEffect(()=>{
         fetchFeedBacks();
     },[])
@@ -55,7 +43,8 @@ const Feedback = () => {
                 {feedBackList?.length > 0 ? (
                     <Grid>
 
-                    <div style={{display:'flex', flexDirection:'row',gap: '15px'}}>
+                    <div style={{display:'flex', flexDirection:'row',gap: '20px'}}>
+                        
                         {visibleFeedback.map((feedback, i) => (
 
                             <Card elevation={3} sx={{ height: "100%", px: 2, py: 3 }} key={i} >

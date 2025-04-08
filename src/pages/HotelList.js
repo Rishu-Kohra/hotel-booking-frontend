@@ -44,9 +44,9 @@ function HotelList(props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
-      checkInDate: null,
-      checkoutDate: null,
-      city: '',
+    checkInDate: null,
+    checkoutDate: null,
+    city: '',
   });
 
   useEffect(() => {
@@ -96,13 +96,14 @@ function HotelList(props) {
 
 
   const handleSearch = async () => {
-    try{
+    setError('')
+    try {
       const checkIn = format(formData.checkInDate, 'yyyy-MM-dd')
       const checkOut = format(formData.checkoutDate, 'yyyy-MM-dd')
       const response = await hotels.getAvailableRoomsByCityAndDate(checkIn, checkOut, formData.city);
       console.log(response.data);
       setHotelList(response.data);
-    } catch(err) {
+    } catch (err) {
       setError("Error Fetching the Available Hotels");
     }
   }
@@ -115,22 +116,13 @@ function HotelList(props) {
     );
   }
 
-  if (error) {
-    return (
-      <Container sx={{ mt: 4 }}>
-        <Typography color="error" align="center">
-          {error}
-        </Typography>
-      </Container>
-    );
-  }
-
   return (
     <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom sx={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
-        {searchTerm ? `Search Results for "${searchTerm}"` : 'All Hotels'}
+      <Typography variant="h4" gutterBottom sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+        {searchTerm ? `Search Results for "${searchTerm}"` : 'Find your Hotel'}
       </Typography>
-      <Grid sx={{display:'flex', justifyContent:'center', alignContent:'center', flexDirection:'row', gap: 5, margin:'20px'}} >
+
+      <Grid sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center', flexDirection: 'row', gap: 5, margin: '20px' }} >
         <Grid item xs={5} sm={6}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
@@ -139,6 +131,7 @@ function HotelList(props) {
               onChange={handleDateChange('checkInDate')}
               renderInput={(params) => <TextField {...params} fullWidth />}
               minDate={new Date()}
+
             />
           </LocalizationProvider>
         </Grid>
@@ -150,25 +143,27 @@ function HotelList(props) {
               onChange={handleDateChange('checkoutDate')}
               renderInput={(params) => <TextField {...params} fullWidth />}
               minDate={formData.checkInDate || new Date()}
+
             />
           </LocalizationProvider>
         </Grid>
         <Grid item xs={12} sm={6}>
-            <FormControl fullWidth sx={{ minWidth: 200 }}>
-              <InputLabel id="demo-simple-select-label">City</InputLabel>
-              <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={formData.city}
-                  label="City"
-                  onChange={handleCityChange}
-              >
-                {cityList.map((city)=>(
-                  <MenuItem value={city}>{city}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          
+          <FormControl fullWidth sx={{ minWidth: 200 }}>
+            <InputLabel id="demo-simple-select-label">City</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={formData.city}
+              label="City"
+              onChange={handleCityChange}
+
+            >
+              {cityList.map((city) => (
+                <MenuItem value={city}>{city}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
         </Grid>
         <Button
           variant="contained"
@@ -179,39 +174,56 @@ function HotelList(props) {
           Search
         </Button>
       </Grid>
-      <Grid container spacing={3}>
-        {hotelList.map((hotel) => (
-          <Grid item xs={12} sm={6} md={4} key={hotel.hotelId}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="200"
-                image={hotelimg}
-                alt={hotel.hotelName}
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {hotel.hotelName}
-                </Typography>
-                <Typography color="text.secondary" gutterBottom>
-                  {hotel.city}, {hotel.state}
-                </Typography>
-                <Rating value={hotel.ratings || 0} readOnly />
-                {renderAmenities(hotel)}
-                <Box sx={{ mt: 2 }}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={() => navigate(`/hotels/${hotel.hotelId}`)}
-                  >
-                    View Details
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      {error ? (
+        <Typography variant='h6' color='error' align='center' guttterBottom>
+          No Available hotels on Selected Dates
+        </Typography>
+      ) : (
+        <div>
+          {hotelList.length > 0 ? (
+            <Grid container spacing={3}>
+            {hotelList.map((hotel) => (
+              <Grid item xs={12} sm={6} md={4} key={hotel.hotelId}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={hotelimg}
+                    alt={hotel.hotelName}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      {hotel.hotelName}
+                    </Typography>
+                    <Typography color="text.secondary" gutterBottom>
+                      {hotel.city}, {hotel.state}
+                    </Typography>
+                    <Rating value={hotel.ratings || 0} readOnly />
+                    {renderAmenities(hotel)}
+                    <Box sx={{ mt: 2 }}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        onClick={() => navigate(`/hotels/${hotel.hotelId}`)}
+                      >
+                        View Details
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+            </Grid>
+          ): (
+            <Typography variant='h6' color={'error'} textAlign={'center'} gutterBottom>
+              No Hotels Available for your Search
+            </Typography>
+          )}
+        </div>
+        
+      )}
+
+
     </Container>
   );
 }
