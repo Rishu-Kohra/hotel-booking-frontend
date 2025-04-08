@@ -6,6 +6,9 @@ import { userProfile } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import Profileicon from '../components/Profileicon';
 import DeleteDialogBox from '../components/DeleteDialogBox';
+import EmailIcon from '@mui/icons-material/Email';
+import Phone from '@mui/icons-material/Phone';
+import Person from '@mui/icons-material/Person';
 
 const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -59,9 +62,24 @@ const ProfilePage = () => {
     });
     setError('')
   };
-
+  
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
+
+    const specialChar = /[!@#$%^&*()<>,.?":{}|]/;
+    if (!feedback.name || specialChar.test(feedback.name)) {
+      setError('Please enter a valid name.');
+      return false;
+    }
+    if (!/^[6-9]\d{9}$/.test(feedback.contact)) {
+      setError('Please enter a valid contact number.');
+      return;
+    }
+    if (!feedback.description || feedback.description.length < 10) {
+      setError('Description must be at least 10 characters long.');
+      return false;
+    }
+
     try{
       await userProfile.feedbackSubmit(userId, {...feedback});
       console.log('Feedback submitted:', feedback);
@@ -121,22 +139,33 @@ const ProfilePage = () => {
 
       {successMessage && <Alert severity="success" sx={{ mt: 2 }}>{successMessage}</Alert>}
 
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 7 }}>
-        <Profileicon name={userInfo.name} width={100} height={200} fontSize={40}/>
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5 , mt: 4}}>
+        <Profileicon name={userInfo.name} width={90} height={90} fontSize={40}/>
         <Box>
-          <Typography variant="h6">Name: {userInfo.name}</Typography>
-          <Typography variant="h6">Email: {userInfo.email}</Typography>
-          <Typography variant="h6">Contact: {userInfo.contact}</Typography>
+          <Box sx={{  display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Person/>
+            <Typography variant="h6">{userInfo.name}</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <EmailIcon/>
+            <Typography variant="h6" > 
+              {userInfo.email}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Phone/>
+            <Typography variant="h6">{userInfo.contact}</Typography>
+          </Box>
           <Button variant="contained" color="error" onClick={handleClickOpen} startIcon={<DeleteIcon />} sx={{ mt: 2 }}>
             Delete Account
           </Button>
         </Box>
       </Box>
   
-      <Typography variant="h5" sx={{ mt: 4 }}>
-        Feedback
+      <Typography variant="h5" sx={{ mt: 6 }}>
+        Give your Feedback
       </Typography>
-      <form onSubmit={handleFeedbackSubmit}>
+      <form onSubmit={handleFeedbackSubmit} >
         <TextField
           fullWidth
           label="Name"
