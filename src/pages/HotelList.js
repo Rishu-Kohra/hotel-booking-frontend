@@ -120,7 +120,7 @@ function HotelList(props) {
   return (
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-        {searchTerm ? `Search Results for "${searchTerm}"` : 'Find your Hotel'}
+        {searchTerm ? `Search Results for "${searchTerm}"` : 'Where to Next?'}
       </Typography>
 
       <Grid sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center', flexDirection: 'row', gap: 5, margin: '20px' }} >
