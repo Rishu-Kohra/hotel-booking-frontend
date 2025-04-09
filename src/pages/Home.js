@@ -53,7 +53,7 @@ function Home() {
                   <TextField
                     fullWidth
                     variant="outlined"
-                    placeholder="Enter city, hotel, name, or etc "
+                    placeholder="Search hotels by name or location"
 
                     InputProps={{
                       style: { color: 'white', borderColor: 'white', borderStyle: 'solid', borderWidth: '1px', borderRadius: '100px' },
