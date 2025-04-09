@@ -34,6 +34,7 @@ import {
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, CheckBox } from '@mui/icons-material';
 import { hotels, roomTypes, inventory, images } from '../services/api';
 import axios from 'axios';
+import HotelImage from '../components/HotelImage';
 
 function OwnerDashboard() {
   const [hotelList, setHotelList] = useState([]);
@@ -378,6 +379,9 @@ function OwnerDashboard() {
                 <Typography variant="body1" color="text.secondary" paragraph>
                   {hotel.description}
                 </Typography>
+                
+                <Box sx={{ mb: 2, display: 'flex', gap: 60 }}>
+              <Box>
                 <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                   <LocationOnIcon />
                   <Typography variant="body2">
@@ -392,6 +396,13 @@ function OwnerDashboard() {
                 <Box sx={{ mb: 2 }}>
                   <Rating value={hotel.ratings || 0} readOnly />
                 </Box>
+                  </Box>
+
+              <Box>
+                <HotelImage hotelId={hotel.hotelId} height={250} width={'100%'}/>
+              </Box>
+              </Box>
+
                 <Box sx={{ mt: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                     <Typography variant="h6">Room Types</Typography>
