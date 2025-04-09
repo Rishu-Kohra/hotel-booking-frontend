@@ -33,8 +33,7 @@ function Home() {
           backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url(${hotelbg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'bottom',
-          //minHeight: 'calc(100vh - 64px)',
-          height: '250px',
+          height: '400px',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -46,9 +45,6 @@ function Home() {
                 <Typography variant="h3" component="h1" color={'white'} gutterBottom>
                   Discover Your Dream Stay
                 </Typography>
-                {/* <Typography variant="h6" color="text.secondary" gutterBottom>
-                  Search hotels by city, name,  or etc
-                </Typography> */}
                 <Box sx={{ display: 'flex', gap: 1, mt: 4 }}>
                   <TextField
                     fullWidth
