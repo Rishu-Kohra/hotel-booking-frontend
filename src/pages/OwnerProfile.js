@@ -6,6 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import  HotelByOwner  from '../components/HotelByOwner'
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteDialogBox from '../components/DeleteDialogBox';
+import EmailIcon from '@mui/icons-material/Email';
+import Phone from '@mui/icons-material/Phone';
+import Person from '@mui/icons-material/Person';
+import Profileicon from '../components/Profileicon';
  
 const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -84,16 +88,30 @@ const ProfilePage = () => {
         My Profile <IconButton onClick={() => setOpenEditDialog(true)}><EditIcon /></IconButton>
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
-      <Box>
-        <Typography variant="h6" sx={{ mt: 2 }}>Name: {userInfo.name}</Typography>
-        <Typography variant="h6">Email: {userInfo.email}</Typography>
-        <Typography variant="h6">Contact: {userInfo.contact}</Typography>
-        <Button variant="contained" color="error" onClick={handleClickOpen} startIcon={<DeleteIcon />} sx={{ mt: 2 }}>
-          Delete Account
-        </Button>
-      </Box>
+      {successMessage && <Alert severity='success'>{successMessage}</Alert>}
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5, mt: 4 }}>
+        <Profileicon name={userInfo.name} width={90} height={90} fontSize={40}/>
+          <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Person />
+              <Typography variant="h6">{userInfo.name}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <EmailIcon />
+              <Typography variant="h6" >
+                {userInfo.email}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Phone />
+              <Typography variant="h6">{userInfo.contact}</Typography>
+            </Box>
+            <Button variant="contained" color="error" onClick={handleClickOpen} startIcon={<DeleteIcon />} sx={{ mt: 2 }}>
+              Delete Account
+            </Button>
+          </Box>
+        </Box>
       
- 
       {/* Edit Profile Dialog */}
       <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)}>
         <DialogTitle>Edit Profile</DialogTitle>

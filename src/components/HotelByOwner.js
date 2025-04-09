@@ -76,29 +76,39 @@ function HotelByOwner() {
     }
   
     return (
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ mt: 8 }}>
         <Typography variant="h4" align='center' gutterBottom>
             My Hotels
         </Typography>
-        <Grid container spacing={3}>
-          {hotelList.map((hotel) => (
-            <Grid item xs={12} sm={6} md={4} key={hotel.hotelId}>
-              <Card>
-                <HotelImage hotelId={hotel.hotelId} height={250} width={'100%'}/>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {hotel.hotelName}
-                  </Typography>
-                  <Typography color="text.secondary" gutterBottom>
-                    {hotel.city}, {hotel.state}
-                  </Typography>
-                  <Rating value={hotel.ratings || 0} readOnly />
-                  {renderAmenities(hotel)}
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        {hotelList.length > 0 ? (
+          <Grid container spacing={3}>
+            {hotelList.map((hotel) => (
+              <Grid item xs={12} sm={6} md={4} key={hotel.hotelId}>
+                <Card>
+                  <HotelImage hotelId={hotel.hotelId} height={250} width={'100%'} />
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      {hotel.hotelName}
+                    </Typography>
+                    <Typography color="text.secondary" gutterBottom>
+                      {hotel.city}, {hotel.state}
+                    </Typography>
+                    <Rating value={hotel.ratings || 0} readOnly />
+                    {renderAmenities(hotel)}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ):(
+          <>
+          <Box sx={{justifyContent:'center', alignItems:'center', textAlign:'center', gap:4}}>
+            <Typography variant='h6' color={'red'}gutterBottom>You do not have registered hotels</Typography>
+            <Typography variant='body1' color={'gray'}gutterBottom>Click on the <a href='/owner-dashboard' style={{color:'black', fontWeight:'bold'}}>dashboard</a> to add Hotels.</Typography>
+          </Box>
+          </>
+        )}
+        
       </Container>
     );
   }
