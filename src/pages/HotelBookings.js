@@ -83,11 +83,11 @@ function HotelBookings() {
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
-        My Bookings
+        Hotel Bookings
       </Typography>
       {bookingList.length === 0 ? (
         <Typography variant="body1" sx={{ mt: 2 }}>
-          You don't have any bookings yet.
+          No bookings made yet.
         </Typography>
       ) : (
         <Grid container spacing={3}>
@@ -115,7 +115,7 @@ function HotelBookings() {
                           Number of Rooms: {booking.numberOfRooms}
                         </Typography>
                         <Typography variant="body2">
-                          Total Price: ${booking.totalPrice}
+                          Total Price: ₹{booking.totalPrice}
                         </Typography>
                         <Typography variant="body2">
                           Name: {booking.customer.customerName}
