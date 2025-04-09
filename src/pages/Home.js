@@ -32,8 +32,9 @@ function Home() {
         sx={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url(${hotelbg})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          minHeight: 'calc(100vh - 64px)',
+          backgroundPosition: 'bottom',
+          //minHeight: 'calc(100vh - 64px)',
+          height: '250px',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -41,41 +42,81 @@ function Home() {
         <Container>
           <Grid container justifyContent="center">
             <Grid item xs={12} md={8}>
-              <Paper sx={{ p: 4, textAlign: 'center' }}>
-                <Typography variant="h3" component="h1" gutterBottom>
+              <Box sx={{ p: 4, textAlign: 'center' }}>
+                <Typography variant="h3" component="h1" color={'white'} gutterBottom>
                   Discover Your Dream Stay
                 </Typography>
-                <Typography variant="h6" color="text.secondary" gutterBottom>
+                {/* <Typography variant="h6" color="text.secondary" gutterBottom>
                   Search hotels by city, name,  or etc
-                </Typography>
+                </Typography> */}
                 <Box sx={{ display: 'flex', gap: 1, mt: 4 }}>
                   <TextField
                     fullWidth
                     variant="outlined"
                     placeholder="Enter city, hotel, name, or etc "
+
+                    InputProps={{
+                      style: { color: 'white', borderColor: 'white', borderStyle: 'solid', borderWidth: '1px', borderRadius: '100px' },
+                      classes: {
+                        notchedOutline: 'white-outline',
+
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: 'white' },
+                    }}
+                    sx={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      borderRadius: '100px',
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'white',
+                        },
+                        // '&:hover fieldset': {
+                        //   borderColor: 'white',
+                        // },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'white',
+                        },
+                      },
+                    }}
+
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                   <Button
-                    variant="contained"
-                    size="large"
+                    variant="outlined"
+                    size="medium"
                     startIcon={<SearchIcon />}
                     onClick={handleSearch}
+                    sx={{
+                      borderRadius: '40px',
+                      color: 'white',
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: 'white',
+                      borderStyle: 'solid',
+                      borderWidth: '1px',
+                      borderRadius: '100px',
+                      '&:hover': {
+                        borderColor: 'white',
+                      },
+                    }}
+
                   >
                     Search
                   </Button>
                 </Box>
-              </Paper>
+              </Box>
             </Grid>
           </Grid>
         </Container>
       </Box>
       <Box>
-        <HotelList/>
-        <Destination/>
-        <Feedback/>
-        <FAQ/>
-        <Footer/>
+        <HotelList />
+        <Destination />
+        <Feedback />
+        <FAQ />
+        <Footer />
       </Box>
     </Box>
   );
