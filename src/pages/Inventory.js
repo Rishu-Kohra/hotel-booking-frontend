@@ -99,7 +99,6 @@ const Inventory = () => {
       {Object.keys(inventoryData).map((hotel) => (
         <Box key={hotel} sx={{ mb: 4 }}>
           <Typography variant="h5">{inventoryData[hotel].hotelName}</Typography><Divider/>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
           {Object.keys(inventoryData[hotel].roomTypes).map((roomTypeId) => (
             <Box key={roomTypeId} sx={{ mb: 2 }}>
               <Typography variant='h6' sx={{ color: 'secondary.main', py: 2 }}>{inventoryData[hotel].roomTypes[roomTypeId].typeName}</Typography>
@@ -134,7 +133,7 @@ const Inventory = () => {
                 )}
               </Box>
             </Box>
-          ))}</Box>
+          ))}
         </Box>
       ))}
     </Container>
