@@ -22,6 +22,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import { useNavigate } from 'react-router-dom';
 import { Hotel } from '@mui/icons-material';
+import HotelImage from '../components/HotelImage';
 
 function HotelByOwner() {
     const navigate = useNavigate();
@@ -83,12 +84,7 @@ function HotelByOwner() {
           {hotelList.map((hotel) => (
             <Grid item xs={12} sm={6} md={4} key={hotel.hotelId}>
               <Card>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={hotelimg}
-                  alt={hotel.hotelName}
-                />
+                <HotelImage hotelId={hotel.hotelId} height={250} width={'100%'}/>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     {hotel.hotelName}
