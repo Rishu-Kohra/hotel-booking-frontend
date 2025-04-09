@@ -423,7 +423,7 @@ function OwnerDashboard() {
                       <ListItem key={roomType.roomTypeId}>
                         <ListItemText
                           primary={roomType.typeName}
-                          secondary={`${roomType.totalRooms} rooms - Rs.${roomType.price}/night`}
+                          secondary={`${roomType.totalRooms} rooms - ₹${roomType.price}/night`}
                         />
                         <ListItemSecondaryAction>
                           <Button
@@ -659,7 +659,7 @@ function OwnerDashboard() {
             />
             <TextField
               fullWidth
-              label="Price per Night"
+              label="Price per Night (₹)"
               type="number"
               value={roomTypeForm.price}
               onChange={(e) => { setRoomTypeForm({ ...roomTypeForm, price: e.target.value }); setRoomError('') }}
