@@ -77,12 +77,18 @@ function OwnerDashboard() {
     setError('')
     const file = event.target.files[0];
     if(file) {
-      console.log('selected file:', file.name)
-      setImage(file);
+      if(file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jfif') {
+        console.log('selected file:', file.name)
+        setImage(file);
+      } else{
+        setError('File not supported');
+        setImage(null)
+      }
     }
   };
 
   const handleButtonClick = async (hotelId) => {
+
       const formData = new FormData();
       formData.append('file',image)
       try{

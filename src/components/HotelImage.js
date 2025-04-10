@@ -5,6 +5,7 @@ import { responsiveFontSizes } from '@mui/material';
 export default function HotelImage({hotelId, width, height}) {
     const [image, setImage] = useState('');
     const [error, setError] = useState('');
+
     const fetchImages = async() => {
         try {
             const imageList = await images.getImage(hotelId);
