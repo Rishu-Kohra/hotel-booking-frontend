@@ -49,6 +49,15 @@ const ProfilePage = () => {
   };
  
   const handleEditSubmit = async () => {
+    const specialChar = /[!@#$%^&*()<>,.?":{}|]/;
+    if (!updateInfo.name || specialChar.test(updateInfo.name)) {
+      setError('Please enter a valid name.');
+      return false;
+    }
+    if (!/^[6-9]\d{9}$/.test(updateInfo.contact)) {
+      setError('Please enter a valid contact number.');
+      return;
+    }
     try {
       await userProfile.updateOwnerProfile(userId, {...updateInfo});
       setOpenEditDialog(false);
@@ -87,7 +96,7 @@ const ProfilePage = () => {
       <Typography variant="h4" align='center' gutterBottom>
         My Profile <IconButton onClick={() => setOpenEditDialog(true)}><EditIcon /></IconButton>
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
+      {error && !setOpenEditDialog && <Alert severity="error">{error}</Alert>}
       {successMessage && <Alert severity='success'>{successMessage}</Alert>}
         <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5, mt: 4 }}>
         <Profileicon name={userInfo.name} width={90} height={90} fontSize={40}/>
@@ -120,14 +129,14 @@ const ProfilePage = () => {
           <TextField
             label="Name"
             value={updateInfo.name}
-            onChange={(e) => setUpdateInfo({ ...updateInfo, name: e.target.value })}
+            onChange={(e) => {setUpdateInfo({ ...updateInfo, name: e.target.value }); setError('')}}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Contact"
             value={updateInfo.contact}
-            onChange={(e) => setUpdateInfo({ ...updateInfo, contact: e.target.value })}
+            onChange={(e) => {setUpdateInfo({ ...updateInfo, contact: e.target.value }); setError('')}}
             fullWidth
             margin="normal"
           />
