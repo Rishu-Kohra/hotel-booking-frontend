@@ -50,7 +50,8 @@ const ProfilePage = () => {
  
   const handleEditSubmit = async () => {
     const specialChar = /[!@#$%^&*()<>,.?":{}|]/;
-    if (!updateInfo.name || specialChar.test(updateInfo.name)) {
+    const numberRegex = /\d/
+    if (!updateInfo.name || specialChar.test(updateInfo.name) || numberRegex.test(updateInfo.name)) {
       setError('Please enter a valid name.');
       return false;
     }
