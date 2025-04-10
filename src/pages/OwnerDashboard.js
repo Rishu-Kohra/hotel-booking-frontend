@@ -144,7 +144,7 @@ function OwnerDashboard() {
     const specialChar = /[!@#$%^&*()<>,.?":{}|]/;
     const numberRegex = /\d/
     if (!hotelForm.hotelName || specialChar.test(hotelForm.hotelName)) {
-      setHotelError('Hotel name is required.');
+      setHotelError('Please enter a valid hotel name.');
       return false;
     }
     if (!hotelForm.description || hotelForm.description.length < 10) {
@@ -153,15 +153,15 @@ function OwnerDashboard() {
     }
 
     if (!hotelForm.city || specialChar.test(hotelForm.city) || numberRegex.test(hotelForm.city)) {
-      setHotelError('City is required.');
+      setHotelError('Please enter a valid city name.');
       return false;
     }
     if (!hotelForm.state || specialChar.test(hotelForm.state) || numberRegex.test(hotelForm.state)) {
-      setHotelError('State is required.');
+      setHotelError('Please enter a valid state name.');
       return false;
     }
     if (!hotelForm.country || specialChar.test(hotelForm.country) || numberRegex.test(hotelForm.country)) {
-      setHotelError('Country is required.');
+      setHotelError('Please enter a valid country name.');
       return false;
     }
     if (!hotelForm.address) {
@@ -182,8 +182,9 @@ function OwnerDashboard() {
   };
 
   const validateRoomTypeForm = () => {
-    if (!roomTypeForm.typeName) {
-      setRoomError('Room type name is required.');
+    const specialChar = /[!@#$%^&*()<>,.?":{}|]/;
+    if (!roomTypeForm.typeName || specialChar.test(roomTypeForm.typeName)) {
+      setRoomError('Please enter a valid roomtype name.');
       return false;
     }
     if (isNaN(roomTypeForm.price) || roomTypeForm.price <= 0) {
@@ -647,7 +648,7 @@ function OwnerDashboard() {
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>Add New Room Type</DialogTitle>
+        <DialogTitle>{selectedRoomType ? 'Edit Room Type' : 'Add New Room Type'}</DialogTitle>
         {roomError && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {roomError}
@@ -693,3 +694,4 @@ function OwnerDashboard() {
 }
 
 export default OwnerDashboard; 
+
